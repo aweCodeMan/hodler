@@ -1,6 +1,7 @@
 package si.betoo.hodler.data.cryptocompare
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class CryptoComparePrice(
         @SerializedName("TYPE") val TYPE: String,
@@ -25,7 +26,7 @@ data class CryptoComparePrice(
         @SerializedName("LOW24HOUR") val LOW24HOUR: String,
         @SerializedName("LASTMARKET") val LASTMARKET: String,
         @SerializedName("CHANGE24HOUR") val CHANGE24HOUR: String,
-        @SerializedName("CHANGEPCT24HOUR") val CHANGEPCT24HOUR: String,
+        @SerializedName("CHANGEPCT24HOUR") val CHANGEPCT24HOUR: Double,
         @SerializedName("CHANGEDAY") val CHANGEDAY: String,
         @SerializedName("CHANGEPCTDAY") val CHANGEPCTDAY: String,
         @SerializedName("SUPPLY") val SUPPLY: String,

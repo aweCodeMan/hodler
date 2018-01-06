@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotterknife.bindView
 import si.betoo.hodler.R
-import si.betoo.hodler.data.coin.Coin
-
 
 class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: List<Coin> = ArrayList()
+    private var coins: List<CoinWithPrices> = ArrayList()
 
     interface OnItemClickListener {
         fun onCoinClicked(item: String, view: View)
@@ -23,7 +21,7 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
         if (holder is AddCoinViewHolder) {
             holder.bind()
         } else if (holder is ViewHolder) {
-            holder.bind(items[position])
+            holder.bind(coins[position])
         }
     }
 
@@ -41,14 +39,14 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position < items.size) {
+        if (position < coins.size) {
             return 0
         }
 
         return 1
     }
 
-    override fun getItemCount(): Int = items.size + 1
+    override fun getItemCount(): Int = coins.size + 1
 
     override fun getItemId(position: Int): Long = position.toLong()
 
@@ -60,14 +58,43 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
 
     inner class ViewHolder(private val rootView: View) : RecyclerView.ViewHolder(rootView) {
         private val textSymbol: TextView by bindView(R.id.text_symbol)
+        private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
 
-        fun bind(coin: Coin) {
-            textSymbol.text = coin.symbol
+        fun bind(coinWithPrice: CoinWithPrices) {
+            textSymbol.text = coinWithPrice.coin.symbol
+
+            layoutPrice.removeAllViews()
+
+            if (coinWithPrice.prices.isNotEmpty()) {
+                coinWithPrice.prices.forEach {
+                    if (it.value.currency.toLowerCase() != coinWithPrice.coin.symbol.toLowerCase()) {
+                        val textView = TextView(layoutPrice.context)
+                        textView.text = it.value.currency + ": " + it.value.price + " (" + "%.2f".format(it.value.change24HourPercent) + ")"
+                        layoutPrice.addView(textView)
+                    }
+                }
+            }
+
         }
     }
 
-    fun setCoins(coins: List<Coin>) {
-        items = coins
+    fun setCoins(coins: List<CoinWithPrices>) {
+        this.coins = coins
+        notifyDataSetChanged()
+    }
+
+    fun updatePrices(updatedCoins: List<CoinWithPrices>) {
+        updatedCoins.forEach {
+            for (coin in coins) {
+                if (coin.coin == it.coin) {
+                    coin.prices.clear()
+                    coin.prices.putAll(it.prices)
+
+                    break
+                }
+            }
+        }
+
         notifyDataSetChanged()
     }
 }

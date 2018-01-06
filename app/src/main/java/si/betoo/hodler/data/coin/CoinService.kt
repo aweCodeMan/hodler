@@ -7,6 +7,7 @@ import io.reactivex.subjects.PublishSubject
 import si.betoo.hodler.data.database.Database
 import si.betoo.hodler.data.api.CryptoCompareAPI
 import si.betoo.hodler.data.cryptocompare.CryptoCompareCoinList
+import si.betoo.hodler.data.cryptocompare.CryptoComparePriceMultiFull
 import si.betoo.hodler.data.cryptocompare.CryptoCompareWrapper
 import timber.log.Timber
 import java.util.ArrayList
@@ -26,23 +27,23 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
 
     fun getAvailableCoins(): Observable<List<Coin>> {
         getActiveCoins().subscribe { activeCoins ->
-                    if (coinsFromAPI.size > 0) {
-                        observableAvailableCoins.onNext(crossReference(activeCoins, coinsFromAPI))
-                    } else {
-                        provideCryptoCompareAPI
-                                .getCoinList()
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({ input ->
-                                    val coins = transformToCoin(input)
+            if (coinsFromAPI.size > 0) {
+                observableAvailableCoins.onNext(mergeAvailableWithActive(activeCoins, coinsFromAPI))
+            } else {
+                provideCryptoCompareAPI
+                        .getCoinList()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ input ->
+                            val coins = transformToCoins(input)
 
-                                    coinsFromAPI.clear()
-                                    coinsFromAPI.addAll(coins)
+                            coinsFromAPI.clear()
+                            coinsFromAPI.addAll(coins)
 
-                                    observableAvailableCoins.onNext(crossReference(activeCoins, coinsFromAPI))
-                                }, { error -> Timber.e(error) })
-                    }
-                }
+                            observableAvailableCoins.onNext(mergeAvailableWithActive(activeCoins, coinsFromAPI))
+                        }, { error -> Timber.e(error) })
+            }
+        }
 
         return observableAvailableCoins
     }
@@ -53,7 +54,24 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
                 .subscribe { db -> db.coinDAO().insert(item) }
     }
 
-    private fun crossReference(activeCoins: List<Coin>, coinsFromAPI: List<Coin>): List<Coin> {
+
+    fun getPricesForCoins(symbols: String, currencies: String): Observable<List<Price>> {
+        return provideCryptoCompareAPI.getCoinPriceMultiFull(symbols, currencies)
+                .map { prices ->
+                    val results = ArrayList<Price>()
+
+                    for (raw in prices.raw) {
+
+                        for (currency in raw.value.data) {
+                            results.add(Price(raw.key, currency.key, currency.value.PRICE, currency.value.CHANGEPCT24HOUR, currency.value.LASTUPDATE))
+                        }
+                    }
+
+                    results
+                }
+    }
+
+    private fun mergeAvailableWithActive(activeCoins: List<Coin>, coinsFromAPI: List<Coin>): List<Coin> {
         val results = ArrayList<Coin>()
 
         for (coin in coinsFromAPI) {
@@ -71,7 +89,7 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
         return results
     }
 
-    private fun transformToCoin(input: CryptoCompareWrapper<CryptoCompareCoinList>): List<Coin> {
+    private fun transformToCoins(input: CryptoCompareWrapper<CryptoCompareCoinList>): List<Coin> {
         var coins: MutableList<Coin> = mutableListOf()
 
         for (key in input.data.data) {

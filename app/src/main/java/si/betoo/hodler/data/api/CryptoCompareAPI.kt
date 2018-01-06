@@ -11,12 +11,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import si.betoo.hodler.data.cryptocompare.CryptoCompareCoinList
+import si.betoo.hodler.data.cryptocompare.CryptoCompareCoinPrice
+import si.betoo.hodler.data.cryptocompare.CryptoComparePriceMultiFull
 import si.betoo.hodler.data.cryptocompare.CryptoCompareWrapper
 
 interface CryptoCompareAPI {
 
     @GET("data/all/coinlist")
     fun getCoinList(): Observable<CryptoCompareWrapper<CryptoCompareCoinList>>
+
+    @GET("data/pricemultifull")
+    fun getCoinPriceMultiFull(@Query("fsyms") coin: String, @Query("tsyms") currency: String): Observable<CryptoComparePriceMultiFull>
 
     companion object {
         fun create(context: Context): CryptoCompareAPI {
@@ -30,7 +35,9 @@ interface CryptoCompareAPI {
                             RxJava2CallAdapterFactory.create())
                     .addConverterFactory(
                             GsonConverterFactory.create(GsonBuilder()
+                                    .registerTypeAdapter(CryptoCompareCoinPrice::class.java, CoinPriceDeserializer())
                                     .registerTypeAdapter(CryptoCompareCoinList::class.java, CoinListDeserializer())
+                                    .registerTypeAdapter(CryptoComparePriceMultiFull::class.java, CryptoComparePriceMultiFullDeserializer())
                                     .create()))
                     .baseUrl("https://min-api.cryptocompare.com/")
                     .client(client)

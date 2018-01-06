@@ -9,11 +9,13 @@ import butterknife.ButterKnife
 import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
+import si.betoo.hodler.data.coin.Price
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.base.BaseActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
+
 
     @Inject
     lateinit var presenter: MainMVP.Presenter
@@ -61,7 +63,7 @@ class MainActivity : BaseActivity(), MainMVP.View {
         recyclerView.adapter = adapter
     }
 
-    override fun showCoins(coins: List<Coin>) {
+    override fun showCoins(coins: List<CoinWithPrices>) {
         adapter.setCoins(coins)
     }
 
@@ -75,5 +77,9 @@ class MainActivity : BaseActivity(), MainMVP.View {
         } else {
             progress.visibility = View.GONE
         }
+    }
+
+    override fun updatePrices(prices: List<CoinWithPrices>) {
+        adapter.updatePrices(prices)
     }
 }
