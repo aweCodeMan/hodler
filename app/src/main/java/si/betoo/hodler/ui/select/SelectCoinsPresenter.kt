@@ -13,6 +13,7 @@ class SelectCoinsPresenter(private var view: SelectCoinsMVP.View, private val co
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ coins ->
                     view.showAvailableCoins(coins)
+                    view.showProgress(false)
                 }, { error -> Timber.e(error) })
     }
 

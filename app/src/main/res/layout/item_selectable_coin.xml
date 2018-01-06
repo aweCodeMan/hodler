@@ -11,7 +11,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardBackgroundColor="@null"
     card_view:cardUseCompatPadding="true"
-    card_view:contentPadding="@dimen/padding_lg">
+    card_view:contentPadding="@dimen/size_large">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

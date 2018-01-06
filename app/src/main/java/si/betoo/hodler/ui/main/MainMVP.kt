@@ -7,6 +7,7 @@ interface MainMVP {
     interface View {
         fun showAddScreen()
         fun showCoins(coins: List<Coin>)
+        fun showProgress(show: Boolean)
     }
 
     interface Presenter {

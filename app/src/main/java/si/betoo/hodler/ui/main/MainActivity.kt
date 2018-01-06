@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.ProgressBar
 import butterknife.ButterKnife
 import kotterknife.bindView
 import si.betoo.hodler.R
@@ -14,7 +15,6 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
 
-
     @Inject
     lateinit var presenter: MainMVP.Presenter
 
@@ -22,6 +22,7 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
     //  Views
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
+    private val progress: ProgressBar by bindView(R.id.progress)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,5 +67,13 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
     override fun showAddScreen() {
         SelectCoinsActivity.start(this)
+    }
+
+    override fun showProgress(show: Boolean) {
+        if (show) {
+            progress.visibility = View.VISIBLE
+        } else {
+            progress.visibility = View.GONE
+        }
     }
 }

@@ -6,6 +6,7 @@ interface SelectCoinsMVP {
 
     interface View {
         fun showAvailableCoins(coins: List<Coin>)
+        fun showProgress(show: Boolean)
     }
 
     interface Presenter {

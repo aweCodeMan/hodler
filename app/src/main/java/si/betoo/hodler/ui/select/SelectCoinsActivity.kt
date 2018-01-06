@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import butterknife.ButterKnife
 import kotterknife.bindView
 import si.betoo.hodler.R
@@ -22,10 +24,10 @@ class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
 
     private lateinit var adapter: SelectCoinsAdapter
 
-
     //  Views
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
     private val toolbar: Toolbar by bindView(R.id.toolbar)
+    private val progress: ProgressBar by bindView(R.id.progress)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +92,14 @@ class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
         return when (item.itemId) {
             else ->
                 super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun showProgress(show: Boolean) {
+        if (show) {
+            progress.visibility = View.VISIBLE
+        } else {
+            progress.visibility = View.GONE
         }
     }
 }

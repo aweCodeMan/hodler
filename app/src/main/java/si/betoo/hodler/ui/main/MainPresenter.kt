@@ -14,6 +14,7 @@ class MainPresenter(private var view: MainMVP.View, private val coinService: Coi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ coins ->
                     view.showCoins(coins)
+                    view.showProgress(false)
                 }, { error -> Timber.e(error) })
     }
 
