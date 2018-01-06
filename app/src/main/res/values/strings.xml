@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Hodler</string>
+    <string name="select_coins">Select coins</string>
+    <string name="description_select_coins">Select coins</string>
+</resources>
