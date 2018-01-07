@@ -61,7 +61,6 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
     fun getPricesForCoins(symbols: String, currencies: String): Observable<List<Price>> {
         val cachedPrice = cachedPrices[symbols]
 
-        //  If cached
         if (cachedPrice != null && cachedPrice.timestamp > (System.currentTimeMillis() - PRICE_CACHE_IN_MS)) {
             return Observable.just(cachedPrice.prices)
         }
