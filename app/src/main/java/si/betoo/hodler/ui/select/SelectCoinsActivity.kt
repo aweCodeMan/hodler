@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
 import butterknife.ButterKnife
 import kotterknife.bindView
@@ -18,6 +21,7 @@ import si.betoo.hodler.ui.base.BaseActivity
 import javax.inject.Inject
 
 class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
+
 
     @Inject
     lateinit var presenter: SelectCoinsMVP.Presenter
@@ -36,12 +40,18 @@ class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
         ButterKnife.bind(this)
         graph.inject(this)
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbar(toolbar)
 
         setMainRecyclerView(recyclerView)
 
         presenter.onCreate()
+    }
+
+    private fun setupToolbar(toolbar: Toolbar) {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        toolbar.title = getString(R.string.select_coins)
     }
 
     override fun onResume() {
@@ -80,7 +90,22 @@ class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.add_toolbar, menu)
+        inflater.inflate(R.menu.select_coins_toolbar, menu)
+
+        val search: EditText = menu.findItem(R.id.action_search).actionView as EditText
+
+        search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun beforeTextChanged(p0: CharSequence?, start: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, p2: Int, p3: Int) {
+                if (p0 != null) {
+                    presenter.onQueryChanged(p0.toString())
+                }
+            }
+        })
+
         return true
     }
 
@@ -100,6 +125,14 @@ class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
             progress.visibility = View.VISIBLE
         } else {
             progress.visibility = View.GONE
+        }
+    }
+
+    override fun showNumberOfSelectedCoins(numberOfSelectedCoins: Int) {
+        if (numberOfSelectedCoins == 0) {
+            toolbar.subtitle = getString(R.string.no_coins_selected)
+        } else {
+            toolbar.subtitle = getString(R.string.selected_number_of_coins, numberOfSelectedCoins)
         }
     }
 }
