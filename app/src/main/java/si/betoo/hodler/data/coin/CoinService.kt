@@ -1,13 +1,11 @@
 package si.betoo.hodler.data.coin
 
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import si.betoo.hodler.data.database.Database
 import si.betoo.hodler.data.api.CryptoCompareAPI
 import si.betoo.hodler.data.cryptocompare.CryptoCompareCoinList
-import si.betoo.hodler.data.cryptocompare.CryptoComparePriceMultiFull
 import si.betoo.hodler.data.cryptocompare.CryptoCompareWrapper
 import timber.log.Timber
 import java.util.ArrayList
@@ -16,6 +14,12 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
 
     private val coinsFromAPI = ArrayList<Coin>()
     private val observableAvailableCoins = PublishSubject.create<List<Coin>>()
+
+    private val cachedPrices: MutableMap<String, CachePriceWrapper> = HashMap()
+
+    companion object {
+        const val PRICE_CACHE_IN_MS = 15000
+    }
 
     fun getActiveCoins(): Observable<List<Coin>> {
         return database.coinDAO()
@@ -33,7 +37,6 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
                 provideCryptoCompareAPI
                         .getCoinList()
                         .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ input ->
                             val coins = transformToCoins(input)
 
@@ -56,6 +59,13 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
 
 
     fun getPricesForCoins(symbols: String, currencies: String): Observable<List<Price>> {
+        val cachedPrice = cachedPrices[symbols]
+
+        //  If cached
+        if (cachedPrice != null && cachedPrice.timestamp > (System.currentTimeMillis() - PRICE_CACHE_IN_MS)) {
+            return Observable.just(cachedPrice.prices)
+        }
+
         return provideCryptoCompareAPI.getCoinPriceMultiFull(symbols, currencies)
                 .map { prices ->
                     val results = ArrayList<Price>()
@@ -66,6 +76,8 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
                             results.add(Price(raw.key, currency.key, currency.value.PRICE, currency.value.CHANGEPCT24HOUR, currency.value.LASTUPDATE))
                         }
                     }
+
+                    cachedPrices.put(symbols, CachePriceWrapper(System.currentTimeMillis(), results))
 
                     results
                 }
@@ -100,4 +112,6 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
 
         return coins
     }
+
+    private class CachePriceWrapper(val timestamp: Long, val prices: List<Price>)
 }
