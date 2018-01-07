@@ -83,21 +83,23 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
     }
 
     private fun mergeAvailableWithActive(activeCoins: List<Coin>, coinsFromAPI: List<Coin>): List<Coin> {
-        val results = ArrayList<Coin>()
+        var counter = 0
 
         for (coin in coinsFromAPI) {
-            val copy = coin.copy()
-
             for (activeCoin in activeCoins) {
-                if (copy.symbol == activeCoin.symbol) {
-                    copy.isActive = activeCoin.isActive
+                if (coin.symbol == activeCoin.symbol) {
+                    coin.isActive = activeCoin.isActive
+                    counter++
+                    break
                 }
             }
 
-            results.add(copy)
+            if (counter == activeCoins.size) {
+                break
+            }
         }
 
-        return results
+        return coinsFromAPI
     }
 
     private fun transformToCoins(input: CryptoCompareWrapper<CryptoCompareCoinList>): List<Coin> {
