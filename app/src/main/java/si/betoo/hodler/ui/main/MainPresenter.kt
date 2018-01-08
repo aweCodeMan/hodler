@@ -4,11 +4,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.data.coin.CoinService
+import si.betoo.hodler.data.coin.HoldingService
 import si.betoo.hodler.data.coin.Price
 import timber.log.Timber
 
 class MainPresenter(private var view: MainMVP.View,
-                    private val coinService: CoinService) : MainMVP.Presenter {
+                    private val coinService: CoinService,
+                    private val holdingService: HoldingService) : MainMVP.Presenter {
+
 
     override fun onCreate() {
         coinService.getActiveCoins()
@@ -18,17 +21,24 @@ class MainPresenter(private var view: MainMVP.View,
                     view.showCoins(coins.map { CoinWithPrices(it, HashMap()) })
                     view.showProgress(false)
 
+                    loadHoldings(coins)
+
                     loadPricesForCoins(coins)
                 }, { error -> Timber.e(error) })
+    }
+
+    private fun loadHoldings(coins: List<Coin>) {
+        for (coin in coins) {
+            holdingService.getHoldingsForCoin(coin.symbol)
+        }
     }
 
 
     private fun loadPricesForCoins(coins: List<Coin>) {
         if (coins.isNotEmpty()) {
             val symbols = coins.joinToString { item -> item.symbol }.replace(" ", "")
-            val currencies = "EUR,BTC,ETH"
 
-            coinService.getPricesForCoins(symbols, currencies)
+            coinService.getPricesForCoins(symbols)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ prices ->
@@ -58,5 +68,9 @@ class MainPresenter(private var view: MainMVP.View,
 
     override fun onAddClicked() {
         view.showAddScreen()
+    }
+
+    override fun onCoinClicked(coin: Coin) {
+        view.showCoinDetail(coin)
     }
 }

@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotterknife.bindView
 import si.betoo.hodler.R
+import si.betoo.hodler.data.coin.Coin
 
 class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var coins: List<CoinWithPrices> = ArrayList()
 
     interface OnItemClickListener {
-        fun onCoinClicked(item: String, view: View)
+        fun onCoinClicked(item: Coin, view: View)
         fun onAddClicked(view: View)
     }
 
@@ -61,6 +62,8 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
         private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
 
         fun bind(coinWithPrice: CoinWithPrices) {
+            rootView.setOnClickListener({ listener.onCoinClicked(coinWithPrice.coin, rootView) })
+
             textSymbol.text = coinWithPrice.coin.symbol
 
             layoutPrice.removeAllViews()

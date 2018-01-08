@@ -18,12 +18,20 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
     private val cachedPrices: MutableMap<String, CachePriceWrapper> = HashMap()
 
     companion object {
-        const val PRICE_CACHE_IN_MS = 15000
+        const val PRICE_CACHE_IN_MS = 15000 * 1000
     }
 
     fun getActiveCoins(): Observable<List<Coin>> {
         return database.coinDAO()
                 .getActiveCoins()
+                .subscribeOn(Schedulers.io())
+                .toObservable()
+                .share()
+    }
+
+    fun getCoin(symbol: String): Observable<Coin> {
+        return database.coinDAO()
+                .find(symbol)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
                 .share()
@@ -58,8 +66,9 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
     }
 
 
-    fun getPricesForCoins(symbols: String, currencies: String): Observable<List<Price>> {
+    fun getPricesForCoins(symbols: String): Observable<List<Price>> {
         val cachedPrice = cachedPrices[symbols]
+        val currencies = "EUR,BTC,ETH"
 
         if (cachedPrice != null && cachedPrice.timestamp > (System.currentTimeMillis() - PRICE_CACHE_IN_MS)) {
             return Observable.just(cachedPrice.prices)
@@ -115,4 +124,6 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
     }
 
     private class CachePriceWrapper(val timestamp: Long, val prices: List<Price>)
+
+
 }

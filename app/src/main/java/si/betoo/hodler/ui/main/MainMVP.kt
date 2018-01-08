@@ -1,7 +1,6 @@
 package si.betoo.hodler.ui.main
 
 import si.betoo.hodler.data.coin.Coin
-import si.betoo.hodler.data.coin.Price
 
 interface MainMVP {
 
@@ -10,11 +9,12 @@ interface MainMVP {
         fun showCoins(coins: List<CoinWithPrices>)
         fun showProgress(show: Boolean)
         fun updatePrices(prices: List<CoinWithPrices>)
+        fun showCoinDetail(coin: Coin)
     }
 
     interface Presenter {
         fun onCreate()
         fun onAddClicked()
+        fun onCoinClicked(coin: Coin)
     }
-
 }

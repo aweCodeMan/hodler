@@ -21,7 +21,11 @@
         </activity>
         <activity
             android:name=".ui.select.SelectCoinsActivity"
-            android:parentActivityName=".ui.main.MainActivity"/>
+            android:parentActivityName=".ui.main.MainActivity" />
+        <activity
+            android:name=".ui.detail.CoinDetailActivity"
+            android:parentActivityName=".ui.main.MainActivity" />
+        <activity android:name=".ui.holding.HoldingFormActivity"></activity>
     </application>
 
 </manifest>

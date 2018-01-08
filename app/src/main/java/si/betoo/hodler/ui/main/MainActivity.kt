@@ -12,9 +12,13 @@ import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.data.coin.Price
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.base.BaseActivity
+import si.betoo.hodler.ui.detail.CoinDetailActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
+    override fun showCoinDetail(coin: Coin) {
+        CoinDetailActivity.start(this, coin)
+    }
 
 
     @Inject
@@ -54,7 +58,8 @@ class MainActivity : BaseActivity(), MainMVP.View {
                 presenter.onAddClicked()
             }
 
-            override fun onCoinClicked(item: String, view: View) {
+            override fun onCoinClicked(item: Coin, view: View) {
+                presenter.onCoinClicked(item)
             }
         })
 

@@ -8,6 +8,7 @@ import dagger.Provides
 import si.betoo.hodler.data.coin.CoinService
 import si.betoo.hodler.data.database.Database
 import si.betoo.hodler.data.api.CryptoCompareAPI
+import si.betoo.hodler.data.coin.HoldingService
 import javax.inject.Singleton
 
 @Module
@@ -20,6 +21,10 @@ class ApplicationModule(private val application: Application) {
     @Provides
     @Singleton
     fun provideCoinService(): CoinService = CoinService(provideCryptoCompareAPI(), provideRoomDatabase())
+
+    @Provides
+    @Singleton
+    fun provideHoldingService(): HoldingService = HoldingService(provideRoomDatabase())
 
     @Provides
     @Singleton

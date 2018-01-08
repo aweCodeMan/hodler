@@ -5,4 +5,9 @@
     <string name="selected_number_of_coins">Selected %1$d</string>
     <string name="no_coins_selected">No coins selected</string>
     <string name="search">Search</string>
+    <string name="description_add_holding">Add holding</string>
+    <string name="add_holding">Add holding</string>
+    <string name="add">Add</string>
+    <string name="label_amount">Amount</string>
+    <string name="label_price">Price</string>
 </resources>

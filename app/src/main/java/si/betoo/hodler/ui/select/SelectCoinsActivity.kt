@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
 
-
     @Inject
     lateinit var presenter: SelectCoinsMVP.Presenter
 
