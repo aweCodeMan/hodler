@@ -19,7 +19,7 @@ availableCurrencies: Map<String, String>) {
     private val cachedPrices: MutableMap<String, CachePriceWrapper> = HashMap()
 
     companion object {
-        const val PRICE_CACHE_IN_MS = 15000 * 1000
+        const val PRICE_CACHE_IN_MS = 15000
     }
 
     fun getActiveCoinsWithHoldings(): Observable<List<CoinWithHoldings>> {
