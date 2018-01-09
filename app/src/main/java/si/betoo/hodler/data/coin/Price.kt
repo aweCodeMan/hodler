@@ -6,6 +6,7 @@ data class Price
 (
         val coinSymbol: String,
         val currency: String,
+        val currencySymbol: String,
         val price: Double,
         val change24HourPercent: Double,
         val lastUpdate: Double

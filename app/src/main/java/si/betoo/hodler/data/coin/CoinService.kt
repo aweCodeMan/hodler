@@ -10,7 +10,8 @@ import si.betoo.hodler.data.database.Database
 import timber.log.Timber
 import java.util.ArrayList
 
-class CoinService(private val provideCryptoCompare: CryptoCompare, private var database: Database) {
+class CoinService(private val provideCryptoCompare: CryptoCompare, private var database: Database, var
+availableCurrencies: Map<String, String>) {
 
     private val coinsFromAPI = ArrayList<Coin>()
     private val observableAvailableCoins = PublishSubject.create<List<Coin>>()
@@ -26,7 +27,8 @@ class CoinService(private val provideCryptoCompare: CryptoCompare, private var d
                 .getActiveCoinsWithHoldings()
                 .subscribeOn(Schedulers.io())
                 .toObservable()
-                .share()    }
+                .share()
+    }
 
     fun getActiveCoins(): Observable<List<Coin>> {
         return database.coinDAO()
@@ -75,7 +77,8 @@ class CoinService(private val provideCryptoCompare: CryptoCompare, private var d
 
     fun getPricesForCoins(symbols: String): Observable<List<Price>> {
         val cachedPrice = cachedPrices[symbols]
-        val currencies = "EUR,BTC,ETH"
+
+        val currencies = availableCurrencies.keys.joinToString(",")
 
         if (cachedPrice != null && cachedPrice.timestamp > (System.currentTimeMillis() - PRICE_CACHE_IN_MS)) {
             return Observable.just(cachedPrice.prices)
@@ -88,7 +91,7 @@ class CoinService(private val provideCryptoCompare: CryptoCompare, private var d
                     for (raw in prices.raw) {
 
                         for (currency in raw.value.data) {
-                            results.add(Price(raw.key, currency.key, currency.value.price, currency.value.changePercent24Hour, currency.value.lastUpdate))
+                            results.add(Price(raw.key, currency.key, availableCurrencies[currency.key]!!, currency.value.price, currency.value.changePercent24Hour, currency.value.lastUpdate))
                         }
                     }
 
@@ -131,8 +134,6 @@ class CoinService(private val provideCryptoCompare: CryptoCompare, private var d
     }
 
     private class CachePriceWrapper(val timestamp: Long, val prices: List<Price>)
-
-
 
 
 }

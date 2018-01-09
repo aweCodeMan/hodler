@@ -23,13 +23,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="?attr/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <LinearLayout
+                    android:id="@+id/layout_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+
                     android:orientation="vertical">
 
                     <TextView

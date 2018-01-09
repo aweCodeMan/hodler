@@ -3,15 +3,15 @@ package si.betoo.hodler.ui.main
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.ButterKnife
-import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
-import si.betoo.hodler.data.coin.Price
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.base.BaseActivity
 import si.betoo.hodler.ui.detail.CoinDetailActivity
@@ -38,6 +38,42 @@ class MainActivity : BaseActivity(), MainMVP.View {
         graph.inject(this)
         presenter.onCreate()
         setMainRecyclerView(recyclerView)
+
+        setToolbarListeners(toolbar)
+    }
+
+    override fun showCoins(coins: List<CoinWithPrices>) {
+        adapter.setCoins(coins)
+    }
+
+    override fun showAddScreen() {
+        SelectCoinsActivity.start(this)
+    }
+
+    override fun showProgress(show: Boolean) {
+        if (show) {
+            progress.visibility = View.VISIBLE
+        } else {
+            progress.visibility = View.GONE
+        }
+    }
+
+    override fun updatePrices(prices: List<CoinWithPrices>) {
+        adapter.updatePrices(prices)
+    }
+
+    override fun showTotal(total: Double, currency: String) {
+        textHoldingValue.text = currency + total
+    }
+
+    override fun showCoinDetail(coin: Coin) {
+        CoinDetailActivity.start(this, coin)
+    }
+
+    private fun setToolbarListeners(toolbar: Toolbar) {
+        toolbar.setOnClickListener({
+            presenter.switchTotalCurrency()
+        })
     }
 
     private fun setMainRecyclerView(recyclerView: RecyclerView) {
@@ -65,33 +101,5 @@ class MainActivity : BaseActivity(), MainMVP.View {
         adapter.setHasStableIds(true)
 
         recyclerView.adapter = adapter
-    }
-
-    override fun showCoins(coins: List<CoinWithPrices>) {
-        adapter.setCoins(coins)
-    }
-
-    override fun showAddScreen() {
-        SelectCoinsActivity.start(this)
-    }
-
-    override fun showProgress(show: Boolean) {
-        if (show) {
-            progress.visibility = View.VISIBLE
-        } else {
-            progress.visibility = View.GONE
-        }
-    }
-
-    override fun updatePrices(prices: List<CoinWithPrices>) {
-        adapter.updatePrices(prices)
-    }
-
-    override fun showTotal(total: Double, currency: String) {
-        textHoldingValue.text = currency + ": " + total
-    }
-
-    override fun showCoinDetail(coin: Coin) {
-        CoinDetailActivity.start(this, coin)
     }
 }

@@ -3,11 +3,15 @@ package si.betoo.hodler.ui.main
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import si.betoo.hodler.data.coin.*
+import si.betoo.hodler.roundTo2DecimalPlaces
 import timber.log.Timber
 
 class MainPresenter(private var view: MainMVP.View,
                     private val coinService: CoinService,
                     private val holdingService: HoldingService) : MainMVP.Presenter {
+
+    var index = 0
+    var cachedPrices: List<CoinWithPrices> = ArrayList()
 
     override fun onCreate() {
         coinService.getActiveCoinsWithHoldings()
@@ -29,7 +33,6 @@ class MainPresenter(private var view: MainMVP.View,
         view.showCoinDetail(coin)
     }
 
-
     private fun loadPricesForCoins(coins: List<CoinWithHoldings>) {
         if (coins.isNotEmpty()) {
             val symbols = coins.joinToString { item -> item.coin.symbol }.replace(" ", "")
@@ -39,6 +42,8 @@ class MainPresenter(private var view: MainMVP.View,
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ prices ->
                         val updatedCoins = mergeCoinsWithPrices(coins, prices)
+                        cachedPrices = updatedCoins
+
                         view.updatePrices(updatedCoins)
 
                         calculateTotalValue(updatedCoins)
@@ -47,20 +52,25 @@ class MainPresenter(private var view: MainMVP.View,
     }
 
     private fun calculateTotalValue(updatedCoins: List<CoinWithPrices>) {
-        val currency = "EUR"
-        var total = 0.0
+        val currency = coinService.availableCurrencies.keys.elementAt(index)
 
+        var total = 0.0
 
         for (updatedCoin in updatedCoins) {
             var amount = 0.0
             updatedCoin.coin.holdings.forEach { amount += it.amount }
 
             if (updatedCoin.prices[currency] != null) {
-                total += updatedCoin.prices[currency]!!.price.times(amount)
+                //  Don't convert if we're showing the total for a crypto currency (like BTC,ETH)
+                if (updatedCoin.coin.coin.symbol == currency) {
+                    total += amount
+                } else {
+                    total += updatedCoin.prices[currency]!!.price.times(amount)
+                }
             }
         }
 
-        view.showTotal(total, currency)
+        view.showTotal(total.roundTo2DecimalPlaces(), coinService.availableCurrencies[currency]!!)
     }
 
     private fun mergeCoinsWithPrices(coins: List<CoinWithHoldings>, prices: List<Price>): List<CoinWithPrices> {
@@ -79,5 +89,15 @@ class MainPresenter(private var view: MainMVP.View,
         }
 
         return results
+    }
+
+    override fun switchTotalCurrency() {
+        index++
+
+        if (index >= coinService.availableCurrencies.size) {
+            index = 0
+        }
+
+        calculateTotalValue(cachedPrices)
     }
 }

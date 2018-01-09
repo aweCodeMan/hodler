@@ -17,5 +17,6 @@ interface MainMVP {
         fun onCreate()
         fun onAddClicked()
         fun onCoinClicked(coin: Coin)
+        fun switchTotalCurrency()
     }
 }

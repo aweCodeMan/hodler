@@ -78,9 +78,9 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
             if (coinWithPrice.prices.isNotEmpty()) {
                 coinWithPrice.prices.forEach {
                     if (it.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase()) {
-                        val textView = TextView(layoutPrice.context)
-                        textView.text = it.value.currency + ": " + it.value.price + " (" + "%.2f".format(it.value.change24HourPercent) + ")"
-                        layoutPrice.addView(textView)
+                        val view = CoinPricesCompoundView(layoutPrice.context)
+                        view.showPrice(it)
+                        layoutPrice.addView(view)
                     }
                 }
             }

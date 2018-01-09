@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="available_total_currencies_code">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>BTC</item>
+        <item>ETH</item>
+    </string-array>
+
+    <array name="available_total_currencies_symbol">
+        <item>€</item>
+        <item>$</item>
+        <item>₿</item>
+        <item>Ξ</item>
+    </array>
+
+</resources>

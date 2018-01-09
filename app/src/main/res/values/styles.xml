@@ -1,31 +1,34 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/colorBlack</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Text.Title" parent="Base.TextAppearance.AppCompat.Large">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Text.Content" parent="Base.TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/colorTextContent</item>
+        <item name="android:textColor">@color/colorLightGray</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="Text.Home.Title" parent="Text.Title">
         <item name="android:textSize">34sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
     <style name="Text.Home.Label" parent="Text.Content">
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorLightGray</item>
     </style>
 
 </resources>
