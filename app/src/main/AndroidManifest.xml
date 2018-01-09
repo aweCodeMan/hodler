@@ -25,7 +25,7 @@
         <activity
             android:name=".ui.detail.CoinDetailActivity"
             android:parentActivityName=".ui.main.MainActivity" />
-        <activity android:name=".ui.holding.HoldingFormActivity"></activity>
+        <activity android:name=".ui.holding.HoldingFormActivity"/>
     </application>
 
 </manifest>

@@ -1,19 +1,15 @@
-package si.betoo.hodler.data.api
+package si.betoo.cryptocompare
 
 import android.content.Context
 import com.google.gson.GsonBuilder
-import com.readystatesoftware.chuck.ChuckInterceptor
 import io.reactivex.Observable
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import si.betoo.hodler.data.cryptocompare.CryptoCompareCoinList
-import si.betoo.hodler.data.cryptocompare.CryptoCompareCoinPrice
-import si.betoo.hodler.data.cryptocompare.CryptoComparePriceMultiFull
-import si.betoo.hodler.data.cryptocompare.CryptoCompareWrapper
 
 interface CryptoCompareAPI {
 
@@ -24,10 +20,10 @@ interface CryptoCompareAPI {
     fun getCoinPriceMultiFull(@Query("fsyms") coin: String, @Query("tsyms") currency: String): Observable<CryptoComparePriceMultiFull>
 
     companion object {
-        fun create(context: Context): CryptoCompareAPI {
+        fun create(interceptor: Interceptor): CryptoCompareAPI {
 
             val client = OkHttpClient.Builder()
-                    .addInterceptor(ChuckInterceptor(context))
+                    .addInterceptor(interceptor)
                     .build()
 
             val retrofit = Retrofit.Builder()

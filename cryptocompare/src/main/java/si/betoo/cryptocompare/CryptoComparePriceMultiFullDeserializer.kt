@@ -1,14 +1,12 @@
-package si.betoo.hodler.data.api
+package si.betoo.cryptocompare
 
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
-import si.betoo.hodler.data.cryptocompare.CryptoComparePrice
-import si.betoo.hodler.data.cryptocompare.CryptoComparePriceMulti
-import si.betoo.hodler.data.cryptocompare.CryptoComparePriceMultiFull
 import java.lang.reflect.Type
+import java.util.*
 
 internal class CryptoComparePriceMultiFullDeserializer : JsonDeserializer<CryptoComparePriceMultiFull> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): CryptoComparePriceMultiFull {

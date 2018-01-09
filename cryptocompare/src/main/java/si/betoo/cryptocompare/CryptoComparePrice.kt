@@ -1,4 +1,4 @@
-package si.betoo.hodler.data.cryptocompare
+package si.betoo.cryptocompare
 
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
