@@ -5,7 +5,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import butterknife.ButterKnife
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
@@ -16,10 +18,6 @@ import si.betoo.hodler.ui.detail.CoinDetailActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
-    override fun showCoinDetail(coin: Coin) {
-        CoinDetailActivity.start(this, coin)
-    }
-
 
     @Inject
     lateinit var presenter: MainMVP.Presenter
@@ -29,6 +27,7 @@ class MainActivity : BaseActivity(), MainMVP.View {
     //  Views
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
     private val progress: ProgressBar by bindView(R.id.progress)
+    private val textHoldingValue: TextView by bindView(R.id.text_holding_value)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,5 +85,13 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
     override fun updatePrices(prices: List<CoinWithPrices>) {
         adapter.updatePrices(prices)
+    }
+
+    override fun showTotal(total: Double, currency: String) {
+        textHoldingValue.text = currency + ": " + total
+    }
+
+    override fun showCoinDetail(coin: Coin) {
+        CoinDetailActivity.start(this, coin)
     }
 }

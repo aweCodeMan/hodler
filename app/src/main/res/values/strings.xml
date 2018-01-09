@@ -10,4 +10,5 @@
     <string name="add">Add</string>
     <string name="label_amount">Amount</string>
     <string name="label_price">Price</string>
+    <string name="total_value">Total value</string>
 </resources>

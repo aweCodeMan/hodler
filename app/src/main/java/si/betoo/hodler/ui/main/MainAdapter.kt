@@ -8,6 +8,7 @@ import android.widget.TextView
 import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
+import kotlin.coroutines.experimental.EmptyCoroutineContext.fold
 
 class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -59,18 +60,24 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
 
     inner class ViewHolder(private val rootView: View) : RecyclerView.ViewHolder(rootView) {
         private val textSymbol: TextView by bindView(R.id.text_symbol)
+        private val textAmount: TextView by bindView(R.id.text_amount)
         private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
 
         fun bind(coinWithPrice: CoinWithPrices) {
-            rootView.setOnClickListener({ listener.onCoinClicked(coinWithPrice.coin, rootView) })
+            rootView.setOnClickListener({ listener.onCoinClicked(coinWithPrice.coin.coin, rootView) })
 
-            textSymbol.text = coinWithPrice.coin.symbol
+            textSymbol.text = coinWithPrice.coin.coin.symbol
+
+            var amount = 0.0
+
+            coinWithPrice.coin.holdings.forEach { amount += it.amount }
+            textAmount.text = amount.toString()
 
             layoutPrice.removeAllViews()
 
             if (coinWithPrice.prices.isNotEmpty()) {
                 coinWithPrice.prices.forEach {
-                    if (it.value.currency.toLowerCase() != coinWithPrice.coin.symbol.toLowerCase()) {
+                    if (it.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase()) {
                         val textView = TextView(layoutPrice.context)
                         textView.text = it.value.currency + ": " + it.value.price + " (" + "%.2f".format(it.value.change24HourPercent) + ")"
                         layoutPrice.addView(textView)

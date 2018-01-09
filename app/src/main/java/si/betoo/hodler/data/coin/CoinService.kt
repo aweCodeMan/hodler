@@ -21,6 +21,13 @@ class CoinService(private val provideCryptoCompare: CryptoCompare, private var d
         const val PRICE_CACHE_IN_MS = 15000 * 1000
     }
 
+    fun getActiveCoinsWithHoldings(): Observable<List<CoinWithHoldings>> {
+        return database.coinDAO()
+                .getActiveCoinsWithHoldings()
+                .subscribeOn(Schedulers.io())
+                .toObservable()
+                .share()    }
+
     fun getActiveCoins(): Observable<List<Coin>> {
         return database.coinDAO()
                 .getActiveCoins()
@@ -124,6 +131,8 @@ class CoinService(private val provideCryptoCompare: CryptoCompare, private var d
     }
 
     private class CachePriceWrapper(val timestamp: Long, val prices: List<Price>)
+
+
 
 
 }

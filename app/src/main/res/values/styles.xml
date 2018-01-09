@@ -18,4 +18,14 @@
         <item name="android:textColor">@color/colorTextContent</item>
     </style>
 
+    <style name="Text.Home.Title" parent="Text.Title">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Home.Label" parent="Text.Content">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>
