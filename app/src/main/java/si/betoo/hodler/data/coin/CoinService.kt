@@ -3,14 +3,14 @@ package si.betoo.hodler.data.coin
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import si.betoo.cryptocompare.CryptoCompareAPI
-import si.betoo.cryptocompare.CryptoCompareCoinList
-import si.betoo.cryptocompare.CryptoCompareWrapper
+import si.betoo.cryptocompare.CryptoCompare
+import si.betoo.cryptocompare.data.CoinMap
+import si.betoo.cryptocompare.data.Wrapper
 import si.betoo.hodler.data.database.Database
 import timber.log.Timber
 import java.util.ArrayList
 
-class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private var database: Database) {
+class CoinService(private val provideCryptoCompare: CryptoCompare, private var database: Database) {
 
     private val coinsFromAPI = ArrayList<Coin>()
     private val observableAvailableCoins = PublishSubject.create<List<Coin>>()
@@ -42,7 +42,7 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
             if (coinsFromAPI.size > 0) {
                 observableAvailableCoins.onNext(mergeAvailableWithActive(activeCoins, coinsFromAPI))
             } else {
-                provideCryptoCompareAPI
+                provideCryptoCompare
                         .getCoinList()
                         .subscribeOn(Schedulers.io())
                         .subscribe({ input ->
@@ -74,14 +74,14 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
             return Observable.just(cachedPrice.prices)
         }
 
-        return provideCryptoCompareAPI.getCoinPriceMultiFull(symbols, currencies)
+        return provideCryptoCompare.getCoinPriceMultiFull(symbols, currencies)
                 .map { prices ->
                     val results = ArrayList<Price>()
 
                     for (raw in prices.raw) {
 
                         for (currency in raw.value.data) {
-                            results.add(Price(raw.key, currency.key, currency.value.PRICE, currency.value.CHANGEPCT24HOUR, currency.value.LASTUPDATE))
+                            results.add(Price(raw.key, currency.key, currency.value.price, currency.value.changePercent24Hour, currency.value.lastUpdate))
                         }
                     }
 
@@ -111,7 +111,7 @@ class CoinService(private val provideCryptoCompareAPI: CryptoCompareAPI, private
         return coinsFromAPI
     }
 
-    private fun transformToCoins(input: CryptoCompareWrapper<CryptoCompareCoinList>): List<Coin> {
+    private fun transformToCoins(input: Wrapper<CoinMap>): List<Coin> {
         var coins: MutableList<Coin> = mutableListOf()
 
         for (key in input.data.data) {

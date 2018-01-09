@@ -9,7 +9,7 @@ import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.main.MainActivity
 
 @ForActivity
-@Component(modules = arrayOf(ActivityModule::class), dependencies = arrayOf(ApplicationComponent::class))
+@Component(modules = [(ActivityModule::class)], dependencies = [(ApplicationComponent::class)])
 interface ActivityComponent {
     fun inject(activity: MainActivity)
     fun inject(activity: SelectCoinsActivity)

@@ -6,9 +6,9 @@ data class Price
 (
         val coinSymbol: String,
         val currency: String,
-        val price: String,
+        val price: Double,
         val change24HourPercent: Double,
-        val lastUpdate: String
+        val lastUpdate: Double
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
