@@ -58,8 +58,8 @@ class MainActivity : BaseActivity(), MainMVP.View {
         }
     }
 
-    override fun updatePrices(prices: List<CoinWithPrices>) {
-        adapter.updatePrices(prices)
+    override fun updatePrices(prices: List<CoinWithPrices>, currencyCode: String) {
+        adapter.updatePrices(prices, currencyCode)
     }
 
     override fun showTotal(total: Double, currency: String) {
@@ -72,7 +72,7 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
     private fun setToolbarListeners(toolbar: Toolbar) {
         toolbar.setOnClickListener({
-            presenter.switchTotalCurrency()
+            presenter.switchCurrentCurrency()
         })
     }
 

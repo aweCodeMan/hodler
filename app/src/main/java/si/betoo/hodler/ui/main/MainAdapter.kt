@@ -8,11 +8,12 @@ import android.widget.TextView
 import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
-import kotlin.coroutines.experimental.EmptyCoroutineContext.fold
+import si.betoo.hodler.roundTo2DecimalPlaces
 
 class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var coins: List<CoinWithPrices> = ArrayList()
+    private var currentCurrencyCode: String? = null
 
     interface OnItemClickListener {
         fun onCoinClicked(item: Coin, view: View)
@@ -61,6 +62,8 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
     inner class ViewHolder(private val rootView: View) : RecyclerView.ViewHolder(rootView) {
         private val textSymbol: TextView by bindView(R.id.text_symbol)
         private val textAmount: TextView by bindView(R.id.text_amount)
+        private val textAmountValue: TextView by bindView(R.id.text_amount_value)
+
         private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
 
         fun bind(coinWithPrice: CoinWithPrices) {
@@ -75,12 +78,25 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
 
             layoutPrice.removeAllViews()
 
+            textAmountValue.text = ""
+
             if (coinWithPrice.prices.isNotEmpty()) {
                 coinWithPrice.prices.forEach {
-                    if (it.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase()) {
-                        val view = CoinPricesCompoundView(layoutPrice.context)
-                        view.showPrice(it)
-                        layoutPrice.addView(view)
+                    val price = it
+
+                    if (price.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase()) {
+
+                        currentCurrencyCode.let {
+
+                            if (price.key == it) {
+                                val view = CoinPricesCompoundView(layoutPrice.context)
+                                view.showPrice(price)
+                                layoutPrice.addView(view)
+
+                                //  Also use price to show value for the amount of coins
+                                textAmountValue.text = price.value.currencySymbol + (price.value.price * amount).roundTo2DecimalPlaces()
+                            }
+                        }
                     }
                 }
             }
@@ -93,7 +109,9 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
         notifyDataSetChanged()
     }
 
-    fun updatePrices(updatedCoins: List<CoinWithPrices>) {
+    fun updatePrices(updatedCoins: List<CoinWithPrices>, currencyCode: String) {
+        currentCurrencyCode = currencyCode
+
         updatedCoins.forEach {
             for (coin in coins) {
                 if (coin.coin == it.coin) {

@@ -8,7 +8,7 @@ interface MainMVP {
         fun showAddScreen()
         fun showCoins(coins: List<CoinWithPrices>)
         fun showProgress(show: Boolean)
-        fun updatePrices(prices: List<CoinWithPrices>)
+        fun updatePrices(prices: List<CoinWithPrices>, currencyCode: String)
         fun showCoinDetail(coin: Coin)
         fun showTotal(total: Double, currency: String)
     }
@@ -17,6 +17,6 @@ interface MainMVP {
         fun onCreate()
         fun onAddClicked()
         fun onCoinClicked(coin: Coin)
-        fun switchTotalCurrency()
+        fun switchCurrentCurrency()
     }
 }

@@ -44,7 +44,7 @@ class MainPresenter(private var view: MainMVP.View,
                         val updatedCoins = mergeCoinsWithPrices(coins, prices)
                         cachedPrices = updatedCoins
 
-                        view.updatePrices(updatedCoins)
+                        view.updatePrices(updatedCoins, getCurrentCurrencyCode())
 
                         calculateTotalValue(updatedCoins)
                     }, { error -> Timber.e(error) })
@@ -52,9 +52,9 @@ class MainPresenter(private var view: MainMVP.View,
     }
 
     private fun calculateTotalValue(updatedCoins: List<CoinWithPrices>) {
-        val currency = coinService.availableCurrencies.keys.elementAt(index)
 
         var total = 0.0
+        val currency = getCurrentCurrencyCode()
 
         for (updatedCoin in updatedCoins) {
             var amount = 0.0
@@ -91,7 +91,11 @@ class MainPresenter(private var view: MainMVP.View,
         return results
     }
 
-    override fun switchTotalCurrency() {
+    private fun getCurrentCurrencyCode(): String {
+        return coinService.availableCurrencies.keys.elementAt(index)
+    }
+
+    override fun switchCurrentCurrency() {
         index++
 
         if (index >= coinService.availableCurrencies.size) {
@@ -99,5 +103,6 @@ class MainPresenter(private var view: MainMVP.View,
         }
 
         calculateTotalValue(cachedPrices)
+        view.updatePrices(cachedPrices, getCurrentCurrencyCode())
     }
 }
