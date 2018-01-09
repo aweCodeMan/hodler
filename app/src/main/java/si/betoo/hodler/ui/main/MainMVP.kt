@@ -18,5 +18,6 @@ interface MainMVP {
         fun onAddClicked()
         fun onCoinClicked(coin: Coin)
         fun switchCurrentCurrency()
+        fun refreshPrices()
     }
 }

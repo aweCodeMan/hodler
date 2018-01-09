@@ -1,6 +1,7 @@
 package si.betoo.hodler.ui.main
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -29,6 +30,8 @@ class MainActivity : BaseActivity(), MainMVP.View {
     private val progress: ProgressBar by bindView(R.id.progress)
     private val textHoldingValue: TextView by bindView(R.id.text_holding_value)
 
+    private val buttonRefresh: FloatingActionButton by bindView(R.id.button_refresh)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,6 +43,10 @@ class MainActivity : BaseActivity(), MainMVP.View {
         setMainRecyclerView(recyclerView)
 
         setToolbarListeners(toolbar)
+
+        buttonRefresh.setOnClickListener({
+            presenter.refreshPrices()
+        })
     }
 
     override fun showCoins(coins: List<CoinWithPrices>) {
@@ -53,8 +60,10 @@ class MainActivity : BaseActivity(), MainMVP.View {
     override fun showProgress(show: Boolean) {
         if (show) {
             progress.visibility = View.VISIBLE
+            buttonRefresh.visibility = View.GONE
         } else {
             progress.visibility = View.GONE
+            buttonRefresh.visibility = View.VISIBLE
         }
     }
 

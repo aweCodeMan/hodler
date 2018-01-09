@@ -10,14 +10,17 @@ class MainPresenter(private var view: MainMVP.View,
                     private val coinService: CoinService,
                     private val holdingService: HoldingService) : MainMVP.Presenter {
 
+
     var index = 0
     var cachedPrices: List<CoinWithPrices> = ArrayList()
+    var cachedCoins: List<CoinWithHoldings> = ArrayList()
 
     override fun onCreate() {
         coinService.getActiveCoinsWithHoldings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ coins ->
+                    cachedCoins = coins
                     view.showCoins(coins.map { CoinWithPrices(it, HashMap()) })
                     view.showProgress(false)
 
@@ -33,6 +36,11 @@ class MainPresenter(private var view: MainMVP.View,
         view.showCoinDetail(coin)
     }
 
+    override fun refreshPrices() {
+        view.showProgress(true)
+        loadPricesForCoins(cachedCoins)
+    }
+
     private fun loadPricesForCoins(coins: List<CoinWithHoldings>) {
         if (coins.isNotEmpty()) {
             val symbols = coins.joinToString { item -> item.coin.symbol }.replace(" ", "")
@@ -45,6 +53,7 @@ class MainPresenter(private var view: MainMVP.View,
                         cachedPrices = updatedCoins
 
                         view.updatePrices(updatedCoins, getCurrentCurrencyCode())
+                        view.showProgress(false)
 
                         calculateTotalValue(updatedCoins)
                     }, { error -> Timber.e(error) })
