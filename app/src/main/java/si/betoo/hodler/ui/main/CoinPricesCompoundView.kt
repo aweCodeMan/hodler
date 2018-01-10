@@ -44,6 +44,15 @@ class CoinPricesCompoundView : LinearLayout {
 
     fun showPrice(price: Map.Entry<String, Price>) {
         textPrice.text = price.value.currencySymbol + price.value.price.toString()
-        textChange.text = context.getString(R.string.change_daily, price.value.change24HourPercent.roundTo2DecimalPlaces().toString())
+
+        val change = price.value.change24HourPercent.roundTo2DecimalPlaces()
+
+        if (change >= 0.0) {
+            textChange.setTextColor(resources.getColor(R.color.colorPositive))
+        } else {
+            textChange.setTextColor(resources.getColor(R.color.colorNegative))
+        }
+
+        textChange.text = context.getString(R.string.change_daily, change.toString())
     }
 }
