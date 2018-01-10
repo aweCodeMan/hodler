@@ -33,8 +33,9 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:orientation="vertical"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintRight_toRightOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/text_symbol" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

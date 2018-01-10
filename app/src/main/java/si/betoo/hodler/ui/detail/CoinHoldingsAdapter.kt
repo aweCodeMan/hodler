@@ -67,7 +67,7 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
             textAmount.text = holding.amount.toString()
             rootView.setOnClickListener({ listener.onHoldingClicked(holding) })
 
-            layoutPrice.removeAllViews()
+          /*  layoutPrice.removeAllViews()
 
             if (prices.isNotEmpty()) {
                 prices.forEach {
@@ -77,7 +77,7 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
                         layoutPrice.addView(textView)
                     }
                 }
-            }
+            }*/
         }
     }
 

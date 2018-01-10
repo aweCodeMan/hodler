@@ -62,7 +62,7 @@ class HoldingFormActivity : BaseActivity(), HoldingFormlMVP.View {
     private fun setupToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
 
-        toolbar.title = getString(R.string.add_holding)
+        supportActionBar?.title = getString(R.string.add_holding)
     }
 
     override fun loadHolding(holding: Holding) {

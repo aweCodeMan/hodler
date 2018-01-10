@@ -12,7 +12,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="35dp">
+    android:padding="@dimen/size_medium">
 
     <ImageView
         android:layout_width="wrap_content"
