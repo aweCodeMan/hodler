@@ -22,7 +22,7 @@ availableCurrencies: Map<String, String>) {
         const val PRICE_CACHE_IN_MS = 15000
     }
 
-    fun getActiveCoinsWithHoldings(): Observable<List<CoinWithHoldings>> {
+    fun getActiveCoinsWithTransactions(): Observable<List<CoinWithTransactions>> {
         return database.coinDAO()
                 .getActiveCoinsWithHoldings()
                 .subscribeOn(Schedulers.io())

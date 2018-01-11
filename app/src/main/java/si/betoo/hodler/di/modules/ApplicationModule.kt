@@ -10,7 +10,7 @@ import si.betoo.cryptocompare.CryptoCompare
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.CoinService
 import si.betoo.hodler.data.database.Database
-import si.betoo.hodler.data.coin.HoldingService
+import si.betoo.hodler.data.coin.TransactionService
 import javax.inject.Singleton
 
 @Module
@@ -26,7 +26,7 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideHoldingService(): HoldingService = HoldingService(provideRoomDatabase())
+    fun provideHoldingService(): TransactionService = TransactionService(provideRoomDatabase())
 
     @Provides
     @Singleton

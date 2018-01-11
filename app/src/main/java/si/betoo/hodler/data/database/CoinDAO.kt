@@ -7,7 +7,7 @@ import android.arch.persistence.room.Query
 import android.arch.persistence.room.Transaction
 import io.reactivex.Single
 import si.betoo.hodler.data.coin.Coin
-import si.betoo.hodler.data.coin.CoinWithHoldings
+import si.betoo.hodler.data.coin.CoinWithTransactions
 
 @Dao
 interface CoinDAO {
@@ -29,5 +29,5 @@ interface CoinDAO {
 
     @Transaction
     @Query("SELECT * FROM coins WHERE is_active = 1 ORDER BY CAST(sort_order AS NUMERIC) ASC")
-    fun getActiveCoinsWithHoldings(): Single<List<CoinWithHoldings>>
+    fun getActiveCoinsWithHoldings(): Single<List<CoinWithTransactions>>
 }

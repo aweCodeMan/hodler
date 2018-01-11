@@ -8,15 +8,15 @@ import timber.log.Timber
 
 class MainPresenter(private var view: MainMVP.View,
                     private val coinService: CoinService,
-                    private val holdingService: HoldingService) : MainMVP.Presenter {
+                    private val transactionService: TransactionService) : MainMVP.Presenter {
 
 
     var index = 0
     var cachedPrices: List<CoinWithPrices> = ArrayList()
-    var cachedCoins: List<CoinWithHoldings> = ArrayList()
+    var cachedCoins: List<CoinWithTransactions> = ArrayList()
 
     override fun onCreate() {
-        coinService.getActiveCoinsWithHoldings()
+        coinService.getActiveCoinsWithTransactions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ coins ->
@@ -41,7 +41,7 @@ class MainPresenter(private var view: MainMVP.View,
         loadPricesForCoins(cachedCoins)
     }
 
-    private fun loadPricesForCoins(coins: List<CoinWithHoldings>) {
+    private fun loadPricesForCoins(coins: List<CoinWithTransactions>) {
         if (coins.isNotEmpty()) {
             val symbols = coins.joinToString { item -> item.coin.symbol }.replace(" ", "")
 
@@ -67,7 +67,7 @@ class MainPresenter(private var view: MainMVP.View,
 
         for (updatedCoin in updatedCoins) {
             var amount = 0.0
-            updatedCoin.coin.holdings.forEach { amount += it.amount }
+            updatedCoin.coin.transactions.forEach { amount += it.amount }
 
             if (updatedCoin.prices[currency] != null) {
                 //  Don't convert if we're showing the total for a crypto currency (like BTC,ETH)
@@ -82,7 +82,7 @@ class MainPresenter(private var view: MainMVP.View,
         view.showTotal(total.roundTo2DecimalPlaces(), coinService.availableCurrencies[currency]!!)
     }
 
-    private fun mergeCoinsWithPrices(coins: List<CoinWithHoldings>, prices: List<Price>): List<CoinWithPrices> {
+    private fun mergeCoinsWithPrices(coins: List<CoinWithTransactions>, prices: List<Price>): List<CoinWithPrices> {
         val results: MutableList<CoinWithPrices> = ArrayList(coins.size)
 
         for (coinWithHoldings in coins) {

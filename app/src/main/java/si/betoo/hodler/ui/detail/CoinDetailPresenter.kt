@@ -4,11 +4,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.data.coin.CoinService
-import si.betoo.hodler.data.coin.Holding
-import si.betoo.hodler.data.coin.HoldingService
+import si.betoo.hodler.data.coin.Transaction
+import si.betoo.hodler.data.coin.TransactionService
 import timber.log.Timber
 
-class CoinDetailPresenter(private var view: CoinDetailMVP.View, private val coinService: CoinService, private val holdingService: HoldingService) : CoinDetailMVP.Presenter {
+class CoinDetailPresenter(private var view: CoinDetailMVP.View, private val coinService: CoinService, private val transactionService: TransactionService) : CoinDetailMVP.Presenter {
 
     private lateinit var coin: Coin
 
@@ -29,12 +29,12 @@ class CoinDetailPresenter(private var view: CoinDetailMVP.View, private val coin
         view.showHoldingForm(coin)
     }
 
-    override fun onHoldingClicked(item: Holding) {
+    override fun onHoldingClicked(item: Transaction) {
         view.showHoldingForm(coin, item)
     }
 
     private fun loadHoldings(coin: Coin) {
-        holdingService.getHoldingsForCoin(coin.symbol)
+        transactionService.getTransactionsForCoin(coin.symbol)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ holdings ->

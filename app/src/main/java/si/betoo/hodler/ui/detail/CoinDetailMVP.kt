@@ -1,16 +1,16 @@
 package si.betoo.hodler.ui.detail
 
 import si.betoo.hodler.data.coin.Coin
-import si.betoo.hodler.data.coin.Holding
+import si.betoo.hodler.data.coin.Transaction
 import si.betoo.hodler.data.coin.Price
 
 interface CoinDetailMVP {
 
     interface View {
         fun showCoin(coin: Coin)
-        fun showHoldings(holdings: List<Holding>)
+        fun showHoldings(transactions: List<Transaction>)
 
-        fun showHoldingForm(coin: Coin, holding: Holding)
+        fun showHoldingForm(coin: Coin, transaction: Transaction)
         fun showHoldingForm(coin: Coin)
         fun showPrices(prices: List<Price>)
     }
@@ -18,6 +18,6 @@ interface CoinDetailMVP {
     interface Presenter {
         fun onCreate(symbol: String)
         fun onAddHoldingClicked()
-        fun onHoldingClicked(item: Holding)
+        fun onHoldingClicked(item: Transaction)
     }
 }

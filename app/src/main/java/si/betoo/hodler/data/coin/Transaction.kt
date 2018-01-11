@@ -4,8 +4,8 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
-@Entity(tableName = "holdings")
-data class Holding(
+@Entity(tableName = "transactions")
+data class Transaction(
 
         @ColumnInfo(name = "symbol")
         val symbol: String,

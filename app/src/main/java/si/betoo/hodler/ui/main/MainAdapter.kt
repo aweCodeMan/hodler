@@ -73,7 +73,7 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
 
             var amount = 0.0
 
-            coinWithPrice.coin.holdings.forEach { amount += it.amount }
+            coinWithPrice.coin.transactions.forEach { amount += it.amount }
             textAmount.text = amount.toString()
 
             layoutPrice.removeAllViews()

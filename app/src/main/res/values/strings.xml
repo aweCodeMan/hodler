@@ -5,11 +5,20 @@
     <string name="selected_number_of_coins">Selected %1$d</string>
     <string name="no_coins_selected">No coins selected</string>
     <string name="search">Search</string>
-    <string name="description_add_holding">Add holding</string>
-    <string name="add_holding">Add holding</string>
+    <string name="description_add_transaction">Add transaction</string>
+    <string name="add_transaction">Add transaction</string>
     <string name="add">Add</string>
     <string name="label_amount">Amount</string>
     <string name="label_price">Price</string>
     <string name="total_value">Total portfolio</string>
     <string name="change_daily">(%1$s)</string>
+    <string name="transaction_sell">Sell</string>
+    <string name="transaction_buy">Buy</string>
+    <string name="remove_transaction">Remove transaction</string>
+    <string name="dialog_remove_transaction_title">Remove transaction?</string>
+    <string name="dialog_remove_transaction_message">Are you sure you want to remove this transaction?</string>
+    <string name="dialog_remove_transaction_cancel">Cancel</string>
+    <string name="dialog_remove_transaction_remove">Remove</string>
+    <string name="label_price_per_unit">Price per unit</string>
+    <string name="label_price_total">Price total</string>
 </resources>

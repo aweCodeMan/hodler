@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotterknife.bindView
 import si.betoo.hodler.R
-import si.betoo.hodler.data.coin.Holding
+import si.betoo.hodler.data.coin.Transaction
 import si.betoo.hodler.data.coin.Price
 
 class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var holdings: List<Holding> = ArrayList()
+    private var transactions: List<Transaction> = ArrayList()
     private var prices: List<Price> = ArrayList()
 
     interface OnItemClickListener {
-        fun onHoldingClicked(item: Holding)
+        fun onHoldingClicked(item: Transaction)
         fun onAddClicked(view: View)
     }
 
@@ -24,32 +24,32 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
         if (holder is AddHoldingViewHolder) {
             holder.bind()
         } else if (holder is HoldingViewHolder) {
-            holder.bind(holdings[position])
+            holder.bind(transactions[position])
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             0 -> {
-                val root = LayoutInflater.from(parent.context).inflate(R.layout.item_holding, parent, false)
+                val root = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
                 HoldingViewHolder(root)
             }
             else -> {
-                val root = LayoutInflater.from(parent.context).inflate(R.layout.item_add_holding, parent, false)
+                val root = LayoutInflater.from(parent.context).inflate(R.layout.item_add_transaction, parent, false)
                 AddHoldingViewHolder(root)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position < holdings.size) {
+        if (position < transactions.size) {
             return 0
         }
 
         return 1
     }
 
-    override fun getItemCount(): Int = holdings.size + 1
+    override fun getItemCount(): Int = transactions.size + 1
 
     override fun getItemId(position: Int): Long = position.toLong()
 
@@ -63,17 +63,17 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
         private val textAmount: TextView by bindView(R.id.text_amount)
         private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
 
-        fun bind(holding: Holding) {
-            textAmount.text = holding.amount.toString()
-            rootView.setOnClickListener({ listener.onHoldingClicked(holding) })
+        fun bind(transaction: Transaction) {
+            textAmount.text = transaction.amount.toString()
+            rootView.setOnClickListener({ listener.onHoldingClicked(transaction) })
 
           /*  layoutPrice.removeAllViews()
 
             if (prices.isNotEmpty()) {
                 prices.forEach {
-                    if (it.currency.toLowerCase() !== holding.symbol.toLowerCase()) {
+                    if (it.currency.toLowerCase() !== transaction.symbol.toLowerCase()) {
                         val textView = TextView(layoutPrice.context)
-                        textView.text = it.currency + ": " + (it.price * holding.amount)
+                        textView.text = it.currency + ": " + (it.price * transaction.amount)
                         layoutPrice.addView(textView)
                     }
                 }
@@ -81,8 +81,8 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
         }
     }
 
-    fun setHoldings(coins: List<Holding>) {
-        this.holdings = coins
+    fun setHoldings(coins: List<Transaction>) {
+        this.transactions = coins
         notifyDataSetChanged()
     }
 

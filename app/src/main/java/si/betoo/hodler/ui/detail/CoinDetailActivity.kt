@@ -11,26 +11,26 @@ import butterknife.ButterKnife
 import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
-import si.betoo.hodler.data.coin.Holding
+import si.betoo.hodler.data.coin.Transaction
 import si.betoo.hodler.data.coin.Price
 import si.betoo.hodler.ui.base.BaseActivity
-import si.betoo.hodler.ui.holding.HoldingFormActivity
+import si.betoo.hodler.ui.transaction.TransactionFormActivity
 import javax.inject.Inject
 
 class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
 
 
 
-    override fun showHoldings(holdings: List<Holding>) {
-        adapter.setHoldings(holdings)
+    override fun showHoldings(transactions: List<Transaction>) {
+        adapter.setHoldings(transactions)
     }
 
     override fun showHoldingForm(coin: Coin) {
-        HoldingFormActivity.start(this, coin, null )
+        TransactionFormActivity.start(this, coin, null )
     }
 
-    override fun showHoldingForm(coin: Coin, holding: Holding) {
-        HoldingFormActivity.start(this, coin, holding )
+    override fun showHoldingForm(coin: Coin, transaction: Transaction) {
+        TransactionFormActivity.start(this, coin, transaction)
     }
 
     override fun showPrices(prices: List<Price>) {
@@ -96,7 +96,7 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
                 presenter.onAddHoldingClicked()
             }
 
-            override fun onHoldingClicked(item: Holding) {
+            override fun onHoldingClicked(item: Transaction) {
                 presenter.onHoldingClicked(item)
             }
         })
