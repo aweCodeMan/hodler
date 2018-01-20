@@ -17,8 +17,8 @@ interface TransactionDAO {
     @Insert(onConflict = REPLACE)
     fun insert(transaction: Transaction)
 
-    @Query("SELECT * FROM transactions WHERE symbol = :symbol")
-    fun findBySymbol(symbol: String): Single<List<Transaction>>
+    @Query("SELECT * FROM transactions WHERE currency_code = :currencyCode")
+    fun findBySymbol(currencyCode: String): Single<List<Transaction>>
 
     @Query("SELECT * FROM transactions WHERE id = :id")
     fun find(id: Long): Single<Transaction>

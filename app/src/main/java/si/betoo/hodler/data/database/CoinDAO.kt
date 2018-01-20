@@ -21,8 +21,8 @@ interface CoinDAO {
     @Insert(onConflict = REPLACE)
     fun insert(coin: Coin)
 
-    @Query("SELECT * FROM coins WHERE symbol = :symbol")
-    fun find(symbol: String): Single<Coin>
+    @Query("SELECT * FROM coins WHERE currency_code = :currencyCode")
+    fun find(currencyCode: String): Single<Coin>
 
     @Query("SELECT * FROM coins WHERE is_active = 1 ORDER BY CAST(sort_order AS NUMERIC) ASC")
     fun getActiveCoins(): Single<List<Coin>>

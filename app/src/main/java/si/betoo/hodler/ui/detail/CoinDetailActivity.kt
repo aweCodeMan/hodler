@@ -70,7 +70,7 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
     }
 
     companion object {
-        private val INTENT_COIN: String = "symbol"
+        private val INTENT_COIN: String = "currencyCode"
 
         fun start(context: Activity, coin: Coin) {
             val starter = Intent(context, CoinDetailActivity::class.java)

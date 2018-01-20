@@ -7,7 +7,7 @@ import java.util.*
 data class Coin
 (
         @PrimaryKey()
-        @ColumnInfo(name = "symbol")
+        @ColumnInfo(name = "currency_code")
         val symbol: String,
 
         @ColumnInfo(name = "name")

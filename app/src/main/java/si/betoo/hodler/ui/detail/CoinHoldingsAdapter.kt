@@ -71,7 +71,7 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
 
             if (prices.isNotEmpty()) {
                 prices.forEach {
-                    if (it.currency.toLowerCase() !== transaction.symbol.toLowerCase()) {
+                    if (it.currency.toLowerCase() !== transaction.currencyCode.toLowerCase()) {
                         val textView = TextView(layoutPrice.context)
                         textView.text = it.currency + ": " + (it.price * transaction.amount)
                         layoutPrice.addView(textView)

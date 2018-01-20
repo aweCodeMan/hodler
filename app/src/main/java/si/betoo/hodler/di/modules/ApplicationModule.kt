@@ -26,7 +26,7 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideHoldingService(): TransactionService = TransactionService(provideRoomDatabase())
+    fun provideHoldingService(): TransactionService = TransactionService(provideRoomDatabase(), provideCryptoCompareAPI())
 
     @Provides
     @Singleton

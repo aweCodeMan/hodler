@@ -2,6 +2,7 @@ package si.betoo.hodler.ui.base
 
 import android.app.Application
 import com.codemonkeylabs.fpslibrary.TinyDancer
+import net.danlew.android.joda.JodaTimeAndroid
 import si.betoo.hodler.BuildConfig
 import si.betoo.hodler.di.modules.ApplicationModule
 import si.betoo.hodler.di.components.ApplicationComponent
@@ -26,6 +27,8 @@ class BaseApplication : Application() {
                     .startingYPosition(600)
                     .show(this)
         }
+
+        JodaTimeAndroid.init(this)
 
         graph = DaggerApplicationComponent.builder().applicationModule(ApplicationModule(this)).build()
         graph.inject(this)
