@@ -1,5 +1,6 @@
 package si.betoo.hodler.ui.main
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.roundTo2DecimalPlaces
-import java.math.BigDecimal
 
 class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -65,7 +65,7 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
         private val textAmount: TextView by bindView(R.id.text_amount)
         private val textAmountValue: TextView by bindView(R.id.text_amount_value)
 
-        private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
+        private val coinPrice: CoinPricesCompoundView by bindView(R.id.price)
 
         fun bind(coinWithPrice: CoinWithPrices) {
             rootView.setOnClickListener({ listener.onCoinClicked(coinWithPrice.coin.coin, rootView) })
@@ -76,37 +76,34 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
 
             textAmount.text = amount.toString()
 
-            layoutPrice.removeAllViews()
-
             textAmountValue.text = ""
 
             if (coinWithPrice.prices.isNotEmpty()) {
                 coinWithPrice.prices.forEach {
                     val price = it
-
                     if (price.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase()) {
 
                         currentCurrencyCode.let {
 
                             if (price.key == it) {
-                                val view = CoinPricesCompoundView(layoutPrice.context)
-                                view.showPrice(price)
-                                layoutPrice.addView(view)
+                                coinPrice.showPrice(price)
 
                                 //  Also use price to show value for the amount of coins
+
+
                                 textAmountValue.text = price.value.currencySymbol + (price.value.price * amount).roundTo2DecimalPlaces()
                             }
                         }
                     }
                 }
             }
-
         }
     }
 
-    fun setCoins(coins: List<CoinWithPrices>) {
-        this.coins = coins
-        notifyDataSetChanged()
+    fun setCoins(newCoins: List<CoinWithPrices>) {
+        val diffResults = DiffUtil.calculateDiff(MainDiffUtil(newCoins, this.coins), false)
+        this.coins = newCoins
+        diffResults.dispatchUpdatesTo(this)
     }
 
     fun updatePrices(updatedCoins: List<CoinWithPrices>, currencyCode: String) {

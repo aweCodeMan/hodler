@@ -17,7 +17,6 @@ class CoinPricesCompoundView : LinearLayout {
     private val textPrice: TextView by bindView(R.id.text_price)
     private val textChange: TextView by bindView(R.id.text_change)
 
-
     constructor(context: Context) : this(context, null) {
         init(context)
     }

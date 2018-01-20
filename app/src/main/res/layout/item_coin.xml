@@ -47,14 +47,13 @@
             card_view:layout_constraintTop_toBottomOf="@id/text_amount"
             tools:text="2.314" />
 
-        <LinearLayout
-            android:id="@+id/layout_price"
-            android:layout_width="match_parent"
+        <si.betoo.hodler.ui.main.CoinPricesCompoundView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:gravity="start"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintLeft_toLeftOf="parent"
-            card_view:layout_constraintRight_toRightOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/text_symbol" />
 
     </android.support.constraint.ConstraintLayout>
