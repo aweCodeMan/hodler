@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.ButterKnife
@@ -16,6 +17,7 @@ import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.base.BaseActivity
 import si.betoo.hodler.ui.detail.CoinDetailActivity
+import si.betoo.hodler.ui.settings.SettingsActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
@@ -31,6 +33,7 @@ class MainActivity : BaseActivity(), MainMVP.View {
     private val textHoldingValue: TextView by bindView(R.id.text_holding_value)
 
     private val buttonRefresh: FloatingActionButton by bindView(R.id.button_refresh)
+    private val buttonSettings: ImageButton by bindView(R.id.button_settings)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,10 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
         buttonRefresh.setOnClickListener({
             presenter.refreshPrices()
+        })
+
+        buttonSettings.setOnClickListener({
+            presenter.onSettingsClicked()
         })
     }
 
@@ -110,5 +117,9 @@ class MainActivity : BaseActivity(), MainMVP.View {
         adapter.setHasStableIds(true)
 
         recyclerView.adapter = adapter
+    }
+
+    override fun showSettings() {
+        SettingsActivity.start(this)
     }
 }

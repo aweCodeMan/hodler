@@ -10,6 +10,7 @@ import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Price
 import si.betoo.hodler.roundTo2DecimalPlaces
+import java.text.DecimalFormat
 
 class CoinPricesCompoundView : LinearLayout {
 
@@ -43,7 +44,10 @@ class CoinPricesCompoundView : LinearLayout {
     }
 
     fun showPrice(price: Map.Entry<String, Price>) {
-        textPrice.text = price.value.currencySymbol + price.value.price.toString()
+        val formatter = DecimalFormat("#")
+        formatter.maximumFractionDigits = 8
+
+        textPrice.text = price.value.currencySymbol + formatter.format(price.value.price)
 
         val change = price.value.change24HourPercent.roundTo2DecimalPlaces()
 

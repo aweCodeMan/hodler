@@ -21,4 +21,16 @@
     <string name="dialog_remove_transaction_remove">Remove</string>
     <string name="label_price_per_unit">Price per unit</string>
     <string name="label_price_total">Price total</string>
+    <string name="description_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="settings_general_title">General settings</string>
+    <string name="settings_general_summary">These settings allow you to customize how the app looks and behaves.</string>
+
+    <string name="settings_select_main_currency_code">Main currency</string>
+    <string name="settings_select_currency_codes">Additional currencies</string>
+
+    <string name="selected_preference">Selected: %1$s</string>
+    <string name="nothing_selected_preference">Nothing selected</string>
+    <string name="none_selected_preference">None selected</string>
 </resources>

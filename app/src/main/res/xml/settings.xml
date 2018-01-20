@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:summary="@string/settings_general_summary"
+        android:title="@string/settings_general_title">
+
+        <ListPreference
+            android:defaultValue="EUR"
+            android:entries="@array/available_total_currencies_symbol"
+            android:entryValues="@array/available_total_currencies_code"
+            android:key="main_currency_code"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/settings_select_main_currency_code" />
+
+        <MultiSelectListPreference
+            android:entries="@array/available_total_currencies_symbol"
+            android:entryValues="@array/available_total_currencies_code"
+            android:key="selected_currency_codes"
+            android:title="@string/settings_select_currency_codes" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -11,6 +11,7 @@ interface MainMVP {
         fun updatePrices(prices: List<CoinWithPrices>, currencyCode: String)
         fun showCoinDetail(coin: Coin)
         fun showTotal(total: Double, currency: String)
+        fun showSettings()
     }
 
     interface Presenter {
@@ -19,5 +20,6 @@ interface MainMVP {
         fun onCoinClicked(coin: Coin)
         fun switchCurrentCurrency()
         fun refreshPrices()
+        fun onSettingsClicked()
     }
 }

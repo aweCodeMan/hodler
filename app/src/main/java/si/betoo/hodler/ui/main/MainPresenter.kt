@@ -10,7 +10,6 @@ class MainPresenter(private var view: MainMVP.View,
                     private val coinService: CoinService,
                     private val transactionService: TransactionService) : MainMVP.Presenter {
 
-
     var index = 0
     var cachedPrices: List<CoinWithPrices> = ArrayList()
     var cachedCoins: List<CoinWithTransactions> = ArrayList()
@@ -113,5 +112,9 @@ class MainPresenter(private var view: MainMVP.View,
 
         calculateTotalValue(cachedPrices)
         view.updatePrices(cachedPrices, getCurrentCurrencyCode())
+    }
+
+    override fun onSettingsClicked() {
+        view.showSettings()
     }
 }

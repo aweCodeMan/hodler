@@ -3,7 +3,6 @@ package si.betoo.hodler.ui.base
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import si.betoo.hodler.di.*
 import si.betoo.hodler.di.components.ActivityComponent
 import si.betoo.hodler.di.components.DaggerActivityComponent
 import si.betoo.hodler.di.modules.ActivityModule

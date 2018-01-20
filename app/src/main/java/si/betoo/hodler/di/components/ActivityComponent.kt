@@ -7,6 +7,7 @@ import si.betoo.hodler.ui.detail.CoinDetailActivity
 import si.betoo.hodler.ui.transaction.TransactionFormActivity
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.main.MainActivity
+import si.betoo.hodler.ui.settings.SettingsActivity
 
 @ForActivity
 @Component(modules = [(ActivityModule::class)], dependencies = [(ApplicationComponent::class)])
@@ -15,4 +16,5 @@ interface ActivityComponent {
     fun inject(activity: SelectCoinsActivity)
     fun inject(activity: CoinDetailActivity)
     fun inject(activity: TransactionFormActivity)
+    fun inject(activity: SettingsActivity)
 }

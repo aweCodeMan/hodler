@@ -7,7 +7,7 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import si.betoo.cryptocompare.CryptoCompare
-import si.betoo.hodler.R
+import si.betoo.hodler.UserCurrency
 import si.betoo.hodler.data.coin.CoinService
 import si.betoo.hodler.data.database.Database
 import si.betoo.hodler.data.coin.TransactionService
@@ -22,7 +22,7 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideCoinService(): CoinService = CoinService(provideCryptoCompareAPI(), provideRoomDatabase(), provideAvailableConvertCurrencies(provideApplicationContext()))
+    fun provideCoinService(userCurrency: UserCurrency): CoinService = CoinService(provideCryptoCompareAPI(), provideRoomDatabase(), userCurrency)
 
     @Provides
     @Singleton
@@ -40,14 +40,6 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideAvailableConvertCurrencies(context: Context): Map<String, String> {
-        val codes = context.resources.getStringArray(R.array.available_total_currencies_code)
-        val symbols = context.resources.getStringArray(R.array.available_total_currencies_symbol)
+    fun provideUserCurrency(context: Context): UserCurrency = UserCurrency(context)
 
-        val map: MutableMap<String, String> = HashMap()
-
-        codes.forEachIndexed { index, code -> map.put(code, symbols[index]) }
-
-        return map
-    }
 }

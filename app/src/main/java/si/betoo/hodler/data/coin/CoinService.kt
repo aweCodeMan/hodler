@@ -6,12 +6,19 @@ import io.reactivex.subjects.PublishSubject
 import si.betoo.cryptocompare.CryptoCompare
 import si.betoo.cryptocompare.data.CoinMap
 import si.betoo.cryptocompare.data.Wrapper
+import si.betoo.hodler.UserCurrency
 import si.betoo.hodler.data.database.Database
 import timber.log.Timber
 import java.util.ArrayList
 
-class CoinService(private val provideCryptoCompare: CryptoCompare, private var database: Database, var
-availableCurrencies: Map<String, String>) {
+class CoinService(private val provideCryptoCompare: CryptoCompare, private var database: Database, private var
+currencyObserver: UserCurrency) {
+
+    var availableCurrencies: Map<String, String> = HashMap()
+
+    init {
+        currencyObserver.getUserCurrencies().subscribe({ cu -> availableCurrencies = cu })
+    }
 
     private val coinsFromAPI = ArrayList<Coin>()
     private val observableAvailableCoins = PublishSubject.create<List<Coin>>()

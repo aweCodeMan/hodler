@@ -9,6 +9,7 @@ import kotterknife.bindView
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.roundTo2DecimalPlaces
+import java.math.BigDecimal
 
 class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -71,9 +72,8 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
 
             textSymbol.text = coinWithPrice.coin.coin.symbol
 
-            var amount = 0.0
+            val amount = coinWithPrice.holdingsAmount()
 
-            coinWithPrice.coin.transactions.forEach { amount += it.amount }
             textAmount.text = amount.toString()
 
             layoutPrice.removeAllViews()

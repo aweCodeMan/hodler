@@ -29,31 +29,46 @@
                 android:minHeight="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <LinearLayout
-                    android:id="@+id/layout_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Text.Home.Label"
+                    <ImageButton
+                        android:id="@+id/button_settings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/total_value" />
+                        android:layout_alignParentEnd="true"
+                        android:padding="@dimen/size_small"
+                        android:alpha="0.7"
+                        android:background="?android:selectableItemBackground"
+                        android:contentDescription="@string/description_settings"
+                        android:src="@drawable/ic_settings_white_24dp" />
 
-                    <TextView
-                        android:id="@+id/text_holding_value"
-                        style="@style/Text.Home.Title"
+                    <LinearLayout
+                        android:id="@+id/layout_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        tools:text="€34,234.34" />
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <TextView
+                            style="@style/Text.Home.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/total_value" />
 
+                        <TextView
+                            android:id="@+id/text_holding_value"
+                            style="@style/Text.Home.Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="€34,234.34" />
+
+                    </LinearLayout>
+                </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>
 
