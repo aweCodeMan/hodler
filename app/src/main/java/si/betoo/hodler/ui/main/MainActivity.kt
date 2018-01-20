@@ -12,12 +12,14 @@ import android.widget.TextView
 import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.activity_main.*
 import kotterknife.bindView
+import si.betoo.hodler.CurrencyFormatter
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.base.BaseActivity
 import si.betoo.hodler.ui.detail.CoinDetailActivity
 import si.betoo.hodler.ui.settings.SettingsActivity
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
@@ -78,8 +80,10 @@ class MainActivity : BaseActivity(), MainMVP.View {
         adapter.updatePrices(prices, currencyCode)
     }
 
-    override fun showTotal(total: Double, currency: String) {
-        textHoldingValue.text = currency + total
+    override fun showTotal(total: Double, currencyCode: String, currencySymbol: String) {
+        val formatter = CurrencyFormatter(currencyCode, currencySymbol)
+
+        textHoldingValue.text = formatter.format(total)
     }
 
     override fun showCoinDetail(coin: Coin) {

@@ -34,7 +34,7 @@ class ActivityModule(private val activity: AppCompatActivity) {
     fun provideHoldingFormView(): TransactionFormMVP.View = activity as TransactionFormMVP.View
 
     @Provides
-    fun provideMainPresenter(view: MainMVP.View, coinService: CoinService, transactionService: TransactionService): MainMVP.Presenter = MainPresenter(view, coinService, transactionService)
+    fun provideMainPresenter(view: MainMVP.View, coinService: CoinService): MainMVP.Presenter = MainPresenter(view, coinService)
 
     @Provides
     fun provideSelectCoinsPresenter(view: SelectCoinsMVP.View, coinService: CoinService): SelectCoinsMVP.Presenter = SelectCoinsPresenter(view, coinService)

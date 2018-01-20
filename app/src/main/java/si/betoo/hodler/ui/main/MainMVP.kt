@@ -10,7 +10,7 @@ interface MainMVP {
         fun showProgress(show: Boolean)
         fun updatePrices(prices: List<CoinWithPrices>, currencyCode: String)
         fun showCoinDetail(coin: Coin)
-        fun showTotal(total: Double, currency: String)
+        fun showTotal(total: Double, currencyCode: String, currencySymbol: String)
         fun showSettings()
     }
 

@@ -7,8 +7,7 @@ import si.betoo.hodler.roundTo2DecimalPlaces
 import timber.log.Timber
 
 class MainPresenter(private var view: MainMVP.View,
-                    private val coinService: CoinService,
-                    private val transactionService: TransactionService) : MainMVP.Presenter {
+                    private val coinService: CoinService) : MainMVP.Presenter {
 
     var index = 0
     var cachedPrices: List<CoinWithPrices> = ArrayList()
@@ -38,6 +37,21 @@ class MainPresenter(private var view: MainMVP.View,
     override fun refreshPrices() {
         view.showProgress(true)
         loadPricesForCoins(cachedCoins)
+    }
+
+    override fun switchCurrentCurrency() {
+        index++
+
+        if (index >= coinService.availableCurrencies.size) {
+            index = 0
+        }
+
+        calculateTotalValue(cachedPrices)
+        view.updatePrices(cachedPrices, getCurrentCurrencyCode())
+    }
+
+    override fun onSettingsClicked() {
+        view.showSettings()
     }
 
     private fun loadPricesForCoins(coins: List<CoinWithTransactions>) {
@@ -78,7 +92,7 @@ class MainPresenter(private var view: MainMVP.View,
             }
         }
 
-        view.showTotal(total.roundTo2DecimalPlaces(), coinService.availableCurrencies[currency]!!)
+        view.showTotal(total.roundTo2DecimalPlaces(), getCurrentCurrencyCode(), coinService.availableCurrencies[getCurrentCurrencyCode()]!!)
     }
 
     private fun mergeCoinsWithPrices(coins: List<CoinWithTransactions>, prices: List<Price>): List<CoinWithPrices> {
@@ -103,18 +117,5 @@ class MainPresenter(private var view: MainMVP.View,
         return coinService.availableCurrencies.keys.elementAt(index)
     }
 
-    override fun switchCurrentCurrency() {
-        index++
 
-        if (index >= coinService.availableCurrencies.size) {
-            index = 0
-        }
-
-        calculateTotalValue(cachedPrices)
-        view.updatePrices(cachedPrices, getCurrentCurrencyCode())
-    }
-
-    override fun onSettingsClicked() {
-        view.showSettings()
-    }
 }
