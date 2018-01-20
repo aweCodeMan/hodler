@@ -14,6 +14,8 @@ class MainPresenter(private var view: MainMVP.View,
     var cachedCoins: List<CoinWithTransactions> = ArrayList()
 
     override fun onCreate() {
+        view.showProgress(true)
+
         coinService.getActiveCoinsWithTransactions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,6 +118,4 @@ class MainPresenter(private var view: MainMVP.View,
     private fun getCurrentCurrencyCode(): String {
         return coinService.availableCurrencies.keys.elementAt(index)
     }
-
-
 }

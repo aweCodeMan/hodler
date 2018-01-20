@@ -22,7 +22,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="?attr/colorPrimary"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
@@ -38,11 +37,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:padding="@dimen/size_small"
                         android:alpha="0.7"
                         android:background="?android:selectableItemBackground"
                         android:contentDescription="@string/description_settings"
+                        android:padding="@dimen/size_small"
                         android:src="@drawable/ic_settings_white_24dp" />
+
+                    <ProgressBar
+                        android:id="@+id/progress_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
 
                     <LinearLayout
                         android:id="@+id/layout_total"
@@ -58,6 +63,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="@string/total_value" />
+
 
                         <TextView
                             android:id="@+id/text_holding_value"

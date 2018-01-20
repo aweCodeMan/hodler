@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -31,7 +32,12 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
     //  Views
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
+
+    private val layoutTotal: ViewGroup by bindView(R.id.layout_total)
+
     private val progress: ProgressBar by bindView(R.id.progress)
+    private val progressTotal: ProgressBar by bindView(R.id.progress_total)
+
     private val textHoldingValue: TextView by bindView(R.id.text_holding_value)
 
     private val buttonRefresh: FloatingActionButton by bindView(R.id.button_refresh)
@@ -69,9 +75,17 @@ class MainActivity : BaseActivity(), MainMVP.View {
     override fun showProgress(show: Boolean) {
         if (show) {
             progress.visibility = View.VISIBLE
+            progressTotal.visibility = View.VISIBLE
+
+            layoutTotal.visibility = View.GONE
+
             buttonRefresh.visibility = View.GONE
         } else {
             progress.visibility = View.GONE
+            progressTotal.visibility = View.GONE
+
+            layoutTotal.visibility = View.VISIBLE
+
             buttonRefresh.visibility = View.VISIBLE
         }
     }
