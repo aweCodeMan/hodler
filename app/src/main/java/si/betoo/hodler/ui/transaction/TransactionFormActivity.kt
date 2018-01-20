@@ -135,7 +135,7 @@ class TransactionFormActivity : BaseActivity(), TransactionFormMVP.View {
         val inflater = menuInflater
         inflater.inflate(R.menu.form_transaction_toolbar, menu)
 
-        if (presenter.canTransactionBeDeleted()) {
+        if (!presenter.canTransactionBeDeleted()) {
             menu.findItem(R.id.action_delete).isVisible = false
         }
 
