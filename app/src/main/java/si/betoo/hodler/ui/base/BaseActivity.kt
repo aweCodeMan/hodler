@@ -1,5 +1,6 @@
 package si.betoo.hodler.ui.base
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import si.betoo.hodler.di.*
@@ -21,5 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 .activityModule(ActivityModule(this))
                 .applicationComponent(BaseApplication.graph)
                 .build()
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 }
