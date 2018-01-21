@@ -70,30 +70,27 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
         fun bind(coinWithPrice: CoinWithPrices) {
             rootView.setOnClickListener({ listener.onCoinClicked(coinWithPrice.coin.coin, rootView) })
 
-            textSymbol.text = coinWithPrice.coin.coin.symbol
-
             val amount = coinWithPrice.holdingsAmount()
-
             textAmount.text = amount.toString()
+
+            textSymbol.text = coinWithPrice.coin.coin.symbol
 
             textAmountValue.text = ""
 
-            if (coinWithPrice.prices.isNotEmpty()) {
-                coinWithPrice.prices.forEach {
-                    val price = it
-                    if (price.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase()) {
+            val price = coinWithPrice.prices.filter { it.value.currency.toLowerCase() != coinWithPrice.coin.coin.symbol.toLowerCase() }
 
-                        currentCurrencyCode.let {
+            currentCurrencyCode.let {
 
-                            if (price.key == it) {
-                                coinPrice.showPrice(price)
+                for (entry in price) {
+                    if (entry.key == it) {
+                        coinPrice.visibility = View.VISIBLE
+                        coinPrice.showPrice(entry)
 
-                                //  Also use price to show value for the amount of coins
-
-
-                                textAmountValue.text = price.value.currencySymbol + (price.value.price * amount).roundTo2DecimalPlaces()
-                            }
-                        }
+                        //  Also use price to show value for the amount of coins
+                        textAmountValue.text = entry.value.currencySymbol + (entry.value.price * amount).roundTo2DecimalPlaces()
+                        break
+                    } else {
+                        coinPrice.visibility = View.INVISIBLE
                     }
                 }
             }
