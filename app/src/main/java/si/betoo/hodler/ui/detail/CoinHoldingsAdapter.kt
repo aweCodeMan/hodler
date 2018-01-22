@@ -61,23 +61,13 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
 
     inner class HoldingViewHolder(private val rootView: View) : RecyclerView.ViewHolder(rootView) {
         private val textAmount: TextView by bindView(R.id.text_amount)
-        private val layoutPrice: ViewGroup by bindView(R.id.layout_price)
+        private val textType: TextView by bindView(R.id.text_type)
 
         fun bind(transaction: Transaction) {
             textAmount.text = transaction.amount.toString()
+
+            textType.text = if(transaction.type == Transaction.TYPE_BUY) "Buy" else "Sell"
             rootView.setOnClickListener({ listener.onHoldingClicked(transaction) })
-
-          /*  layoutPrice.removeAllViews()
-
-            if (prices.isNotEmpty()) {
-                prices.forEach {
-                    if (it.currency.toLowerCase() !== transaction.currencyCode.toLowerCase()) {
-                        val textView = TextView(layoutPrice.context)
-                        textView.text = it.currency + ": " + (it.price * transaction.amount)
-                        layoutPrice.addView(textView)
-                    }
-                }
-            }*/
         }
     }
 

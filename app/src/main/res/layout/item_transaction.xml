@@ -26,16 +26,15 @@
             card_view:layout_constraintTop_toTopOf="parent"
             tools:text="0.4324" />
 
-        <LinearLayout
-            android:id="@+id/layout_price"
+        <TextView
+            android:id="@+id/text_type"
             style="@style/Text.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="vertical"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintRight_toRightOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            android:textAllCaps="true"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/text_amount"
+            tools:text="Buy" />
 
     </android.support.constraint.ConstraintLayout>
 
