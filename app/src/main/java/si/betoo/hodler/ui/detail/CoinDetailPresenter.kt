@@ -15,6 +15,7 @@ class CoinDetailPresenter(private var view: CoinDetailMVP.View, private val coin
 
     private var index = 0
 
+    private val cachedHistory: MutableMap<String, PriceHistory> = HashMap()
 
     override fun onCreate(symbol: String) {
         this.symbol = symbol
@@ -34,7 +35,7 @@ class CoinDetailPresenter(private var view: CoinDetailMVP.View, private val coin
 
     private fun loadGraph(symbol: String) {
 
-        val currencies = coinService.availableCurrencies.filter { it.key !== symbol }
+        val currencies = coinService.availableCurrencies.filter { it.key != symbol }
 
         if (currencies.isNotEmpty()) {
             index++
@@ -45,12 +46,18 @@ class CoinDetailPresenter(private var view: CoinDetailMVP.View, private val coin
 
             val toSymbol = currencies.keys.elementAt(index)
 
-            coinService.getHistoryDay(symbol, toSymbol, 30)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ history ->
-                        view.showHistory(PriceHistory(symbol + "/" + toSymbol, history))
-                    }, { error -> Timber.e(error) })
+            if (cachedHistory.containsKey(toSymbol)) {
+                view.showHistory(cachedHistory[toSymbol]!!)
+            } else {
+                coinService.getHistoryDay(symbol, toSymbol, 30)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ history ->
+                            val hist = PriceHistory(symbol + "/" + toSymbol, history)
+                            cachedHistory[toSymbol] = hist
+                            view.showHistory(hist)
+                        }, { error -> Timber.e(error) })
+            }
         }
     }
 
