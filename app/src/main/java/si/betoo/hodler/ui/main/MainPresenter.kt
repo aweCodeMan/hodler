@@ -81,8 +81,7 @@ class MainPresenter(private var view: MainMVP.View,
         val currency = getCurrentCurrencyCode()
 
         for (updatedCoin in updatedCoins) {
-            var amount = 0.0
-            updatedCoin.coin.transactions.forEach { amount += it.amount }
+            val amount = updatedCoin.holdingsAmount()
 
             if (updatedCoin.prices[currency] != null) {
                 //  Don't convert if we're showing the total for a crypto currency (like BTC,ETH)
