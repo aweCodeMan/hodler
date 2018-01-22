@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
@@ -85,6 +86,7 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
 
                 val xAxis = chart.xAxis
                 setupXAxis(xAxis, history.history)
+                setupYAxis(chart.axisLeft, history.history)
                 chart.legend.isEnabled = false
 
                 chart.invalidate()
@@ -93,6 +95,10 @@ class CoinHoldingsAdapter(var listener: OnItemClickListener) : RecyclerView.Adap
 
             }
         }
+    }
+
+    private fun setupYAxis(axisLeft: YAxis, history: List<History>) {
+        axisLeft.isEnabled = false
     }
 
     inner class HoldingViewHolder(private val rootView: View) : RecyclerView.ViewHolder(rootView) {
