@@ -2,13 +2,25 @@ package si.betoo.hodler.ui.detail
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import butterknife.ButterKnife
+import com.github.mikephil.charting.charts.CandleStickChart
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.CandleData
+import com.github.mikephil.charting.data.CandleDataSet
+import com.github.mikephil.charting.data.CandleEntry
 import kotterknife.bindView
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import si.betoo.cryptocompare.data.History
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.data.coin.Transaction
@@ -18,25 +30,17 @@ import si.betoo.hodler.ui.transaction.TransactionFormActivity
 import javax.inject.Inject
 
 class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
-
-
-
     override fun showHoldings(transactions: List<Transaction>) {
         adapter.setHoldings(transactions)
     }
 
     override fun showHoldingForm(coin: Coin) {
-        TransactionFormActivity.start(this, coin, null )
+        TransactionFormActivity.start(this, coin, null)
     }
 
     override fun showHoldingForm(coin: Coin, transaction: Transaction) {
         TransactionFormActivity.start(this, coin, transaction)
     }
-
-    override fun showPrices(prices: List<Price>) {
-        adapter.setPrices(prices)
-    }
-
 
     @Inject
     lateinit var presenter: CoinDetailMVP.Presenter
@@ -45,10 +49,13 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
     private val toolbar: Toolbar by bindView(R.id.toolbar)
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
 
+    private val buttonAdd: FloatingActionButton by bindView(R.id.button_add)
+
+ //   private val chart: CandleStickChart by bindView(R.id.chart)
+
     private lateinit var adapter: CoinHoldingsAdapter
 
     private lateinit var symbol: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +69,8 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
 
         setupToolbar(toolbar)
         setRecyclerView(recyclerView)
+
+        buttonAdd.setOnClickListener { presenter.onAddHoldingClicked() }
     }
 
     private fun setupToolbar(toolbar: Toolbar) {
@@ -81,7 +90,7 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
 
     private fun setRecyclerView(recyclerView: RecyclerView) {
 
-        val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
 
         //  Needed so it stretches the width of the cards on the initial load
         manager.isAutoMeasureEnabled = false
@@ -91,9 +100,8 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
         recyclerView.itemAnimator.changeDuration = 0L
 
         adapter = CoinHoldingsAdapter(object : CoinHoldingsAdapter.OnItemClickListener {
-
-            override fun onAddClicked(view: View) {
-                presenter.onAddHoldingClicked()
+            override fun onChartClicked() {
+                presenter.onChartClicked()
             }
 
             override fun onHoldingClicked(item: Transaction) {
@@ -109,5 +117,9 @@ class CoinDetailActivity : BaseActivity(), CoinDetailMVP.View {
     override fun showCoin(coin: Coin) {
         toolbar.title = coin.symbol
         toolbar.subtitle = coin.name
+    }
+
+    override fun showHistory(history: PriceHistory) {
+        adapter.showHistory(history)
     }
 }

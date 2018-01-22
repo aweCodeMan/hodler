@@ -2,7 +2,7 @@ package si.betoo.hodler.di.components
 
 import dagger.Component
 import si.betoo.cryptocompare.CryptoCompare
-import si.betoo.hodler.UserCurrency
+import si.betoo.hodler.UserSettings
 import si.betoo.hodler.data.coin.CoinService
 import si.betoo.hodler.data.coin.TransactionService
 import si.betoo.hodler.di.modules.ApplicationModule
@@ -15,7 +15,7 @@ interface ApplicationComponent {
     fun inject(application: BaseApplication)
 
     fun coinService(): CoinService
-    fun userCurrency(): UserCurrency
+    fun userCurrency(): UserSettings
     fun holdingService(): TransactionService
     fun cryptoCompareAPI(): CryptoCompare
 }

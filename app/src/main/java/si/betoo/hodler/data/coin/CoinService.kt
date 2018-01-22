@@ -5,19 +5,20 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import si.betoo.cryptocompare.CryptoCompare
 import si.betoo.cryptocompare.data.CoinMap
+import si.betoo.cryptocompare.data.History
 import si.betoo.cryptocompare.data.Wrapper
-import si.betoo.hodler.UserCurrency
+import si.betoo.hodler.UserSettings
 import si.betoo.hodler.data.database.Database
 import timber.log.Timber
 import java.util.ArrayList
 
 class CoinService(private val provideCryptoCompare: CryptoCompare, private var database: Database, private var
-currencyObserver: UserCurrency) {
+settingsObserver: UserSettings) {
 
     var availableCurrencies: Map<String, String> = HashMap()
 
     init {
-        currencyObserver.getUserCurrencies().subscribe({ cu -> availableCurrencies = cu })
+        settingsObserver.getUserCurrencies().subscribe({ cu -> availableCurrencies = cu })
     }
 
     private val coinsFromAPI = ArrayList<Coin>()
@@ -81,6 +82,9 @@ currencyObserver: UserCurrency) {
                 .subscribe { db -> db.coinDAO().insert(item) }
     }
 
+    fun getHistoryDay(fromCurrencyCode: String, toCurrencyCode: String, limit : Int): Observable<List<History>> {
+        return provideCryptoCompare.getHistoryDay(fromCurrencyCode, toCurrencyCode, limit).map { it.data }
+    }
 
     fun getPricesForCoins(symbols: String): Observable<List<Price>> {
         val cachedPrice = cachedPrices[symbols]
@@ -141,6 +145,4 @@ currencyObserver: UserCurrency) {
     }
 
     private class CachePriceWrapper(val timestamp: Long, val prices: List<Price>)
-
-
 }

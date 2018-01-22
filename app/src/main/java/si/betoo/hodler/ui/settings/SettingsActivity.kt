@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.preference.*
 import android.view.MenuItem
 import si.betoo.hodler.R
-import si.betoo.hodler.UserCurrency
+import si.betoo.hodler.UserSettings
 import si.betoo.hodler.ui.base.BaseActivity
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity() {
 
     @Inject
-    lateinit var userCurrency: UserCurrency
+    lateinit var userSettings: UserSettings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +84,7 @@ class SettingsActivity : BaseActivity() {
                 preference.summary = stringValue
             }
 
-            (activity as SettingsActivity).userCurrency.refresh()
+            (activity as SettingsActivity).userSettings.refresh()
 
             true
         }

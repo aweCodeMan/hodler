@@ -7,7 +7,7 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import si.betoo.cryptocompare.CryptoCompare
-import si.betoo.hodler.UserCurrency
+import si.betoo.hodler.UserSettings
 import si.betoo.hodler.data.coin.CoinService
 import si.betoo.hodler.data.database.Database
 import si.betoo.hodler.data.coin.TransactionService
@@ -22,7 +22,7 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideCoinService(userCurrency: UserCurrency): CoinService = CoinService(provideCryptoCompareAPI(), provideRoomDatabase(), userCurrency)
+    fun provideCoinService(userSettings: UserSettings): CoinService = CoinService(provideCryptoCompareAPI(), provideRoomDatabase(), userSettings)
 
     @Provides
     @Singleton
@@ -40,6 +40,6 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideUserCurrency(context: Context): UserCurrency = UserCurrency(context)
+    fun provideUserCurrency(context: Context): UserSettings = UserSettings(context)
 
 }
