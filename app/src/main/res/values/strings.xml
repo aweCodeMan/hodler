@@ -33,4 +33,5 @@
     <string name="selected_preference">Selected: %1$s</string>
     <string name="nothing_selected_preference">Nothing selected</string>
     <string name="none_selected_preference">None selected</string>
+    <string name="settings">Settings</string>
 </resources>
