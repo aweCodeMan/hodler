@@ -5,16 +5,16 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:background="@color/colorDarkGray"
+    android:layout_marginTop="@dimen/size_small"
+    android:layout_marginLeft="@dimen/size_small"
+    android:layout_marginRight="@dimen/size_small"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardBackgroundColor="@color/colorDarkGray"
-    card_view:cardCornerRadius="0dp"
+    card_view:cardBackgroundColor="@color/colorPrimary"
+    card_view:cardCornerRadius="@dimen/size_small"
     card_view:cardUseCompatPadding="true"
-    card_view:contentPadding="@dimen/size_medium">
+    card_view:contentPadding="@dimen/size_small">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

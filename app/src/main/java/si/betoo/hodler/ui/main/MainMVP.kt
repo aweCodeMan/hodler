@@ -5,23 +5,25 @@ import si.betoo.hodler.data.coin.Coin
 interface MainMVP {
 
     interface View {
-        fun showAddScreen()
+        fun showAddCoinsScreen()
+        fun showSettingsScreen()
+        fun showCoinDetailScreen(coin: Coin)
+
+        fun updatePrices(prices: List<CoinWithPrices>, currencyCode: String)
         fun showCoins(coins: List<CoinWithPrices>)
         fun showProgress(show: Boolean)
-        fun updatePrices(prices: List<CoinWithPrices>, currencyCode: String)
-        fun showCoinDetail(coin: Coin)
+
         fun showTotal(total: Double, currencyCode: String, currencySymbol: String)
-        fun showSettings()
         fun showPercentChange(percentChange: Double)
-        fun showTotalChange(totalChange: Double)
+        fun showTotalChange(totalChange: Double, currencyCode: String, currencySymbol: String)
     }
 
     interface Presenter {
         fun onCreate()
-        fun onAddClicked()
-        fun onCoinClicked(coin: Coin)
-        fun switchCurrentCurrency()
         fun refreshPrices()
+        fun switchCurrentCurrency()
+        fun onCoinClicked(coin: Coin)
+        fun onAddCoinsClicked()
         fun onSettingsClicked()
     }
 }

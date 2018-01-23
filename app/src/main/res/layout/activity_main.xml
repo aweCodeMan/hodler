@@ -7,93 +7,21 @@
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapse_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways"
             app:titleEnabled="false">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin">
+            <include layout="@layout/include_main_collapsing_toolbar" />
 
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Works" />
-
-            </android.support.v7.widget.Toolbar>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.4">
-
-                <ProgressBar
-                    android:id="@+id/progress_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-
-                <LinearLayout
-                    android:id="@+id/layout_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Text.Home.Label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/total_value" />
-
-
-                    <TextView
-                        android:id="@+id/text_holding_value"
-                        style="@style/Text.Home.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        tools:text="€34,234.34" />
-
-                    <TextView
-                        android:id="@+id/text_percent_change"
-                        style="@style/Text.Content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        tools:text="23" />
-
-                    <TextView
-                        android:id="@+id/text_total_change"
-                        style="@style/Text.Content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        tools:text="23" />
-
-                </LinearLayout>
-            </RelativeLayout>
+            <include layout="@layout/include_main_toolbar" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
 
     </android.support.design.widget.AppBarLayout>
 
@@ -114,7 +42,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/button_refresh"
+        android:id="@+id/refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

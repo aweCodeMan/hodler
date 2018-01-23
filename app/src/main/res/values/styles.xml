@@ -1,10 +1,11 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@color/colorBlack</item>
-        <item name="colorPrimary">@color/colorBlack</item>
-        <item name="colorPrimaryDark">#3e3e3e</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">#07121a</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
 
     <style name="Text.Title" parent="Base.TextAppearance.AppCompat.Large">

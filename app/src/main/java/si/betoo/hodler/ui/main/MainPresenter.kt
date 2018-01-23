@@ -9,43 +9,39 @@ import timber.log.Timber
 class MainPresenter(private var view: MainMVP.View,
                     private val coinService: CoinService) : MainMVP.Presenter {
 
-    var index = 0
+    var currencyIndex = 0
     var cachedPrices: List<CoinWithPrices> = ArrayList()
     var cachedCoins: List<CoinWithTransactions> = ArrayList()
 
     override fun onCreate() {
-        view.showProgress(true)
-
         coinService.getActiveCoinsWithTransactions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ coins ->
                     cachedCoins = coins
                     view.showCoins(coins.map { CoinWithPrices(it, HashMap()) })
-                    view.showProgress(false)
 
                     loadPricesForCoins(coins)
                 }, { error -> Timber.e(error) })
     }
 
-    override fun onAddClicked() {
-        view.showAddScreen()
+    override fun onAddCoinsClicked() {
+        view.showAddCoinsScreen()
     }
 
     override fun onCoinClicked(coin: Coin) {
-        view.showCoinDetail(coin)
+        view.showCoinDetailScreen(coin)
     }
 
     override fun refreshPrices() {
-        view.showProgress(true)
         loadPricesForCoins(cachedCoins)
     }
 
     override fun switchCurrentCurrency() {
-        index++
+        currencyIndex++
 
-        if (index >= coinService.availableCurrencies.size) {
-            index = 0
+        if (currencyIndex >= coinService.availableCurrencies.size) {
+            currencyIndex = 0
         }
 
         calculateTotalValue(cachedPrices)
@@ -53,12 +49,14 @@ class MainPresenter(private var view: MainMVP.View,
     }
 
     override fun onSettingsClicked() {
-        view.showSettings()
+        view.showSettingsScreen()
     }
 
     private fun loadPricesForCoins(coins: List<CoinWithTransactions>) {
         if (coins.isNotEmpty()) {
             val symbols = coins.joinToString { item -> item.coin.symbol }.replace(" ", "")
+
+            view.showProgress(true)
 
             coinService.getPricesForCoins(symbols)
                     .subscribeOn(Schedulers.io())
@@ -101,13 +99,13 @@ class MainPresenter(private var view: MainMVP.View,
                 if (updatedCoin.coin.coin.symbol != currency) {
 
                     val coinChange = updatedCoin.prices[currency]!!.change24HourPercent
-                    percentChange += coinChange * (updatedCoin.prices[currency]!!.price.times(updatedCoin.holdingsAmount())/total)
+                    percentChange += coinChange * (updatedCoin.prices[currency]!!.price.times(updatedCoin.holdingsAmount()) / total)
                 }
             }
         }
 
         view.showPercentChange(percentChange)
-        view.showTotalChange(percentChange * total / 100)
+        view.showTotalChange(percentChange * total / 100, getCurrentCurrencyCode(), coinService.availableCurrencies[getCurrentCurrencyCode()]!!)
         view.showTotal(total.roundTo2DecimalPlaces(), getCurrentCurrencyCode(), coinService.availableCurrencies[getCurrentCurrencyCode()]!!)
     }
 
@@ -130,6 +128,6 @@ class MainPresenter(private var view: MainMVP.View,
     }
 
     private fun getCurrentCurrencyCode(): String {
-        return coinService.availableCurrencies.keys.elementAt(index)
+        return coinService.availableCurrencies.keys.elementAt(currencyIndex)
     }
 }

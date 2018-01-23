@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="?attr/actionBarSize"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:layout_collapseMode="parallax"
+    app:layout_collapseParallaxMultiplier="0.4">
+
+    <LinearLayout
+        android:id="@+id/collapse_toolbar_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Text.Home.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/total_value" />
+
+        <TextView
+            android:id="@+id/collapse_toolbar_total"
+            style="@style/Text.Home.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="€34,234.34" />
+
+        <TextView
+            android:id="@+id/collapse_toolbar_change_percent"
+            style="@style/Text.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="23" />
+
+        <TextView
+            android:id="@+id/collapse_toolbar_total_change"
+            style="@style/Text.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="23" />
+
+    </LinearLayout>
+</RelativeLayout>
