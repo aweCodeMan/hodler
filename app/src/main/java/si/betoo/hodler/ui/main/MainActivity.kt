@@ -16,6 +16,7 @@ import kotterknife.bindView
 import si.betoo.hodler.CurrencyFormatter
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
+import si.betoo.hodler.roundTo2DecimalPlaces
 import si.betoo.hodler.ui.select.SelectCoinsActivity
 import si.betoo.hodler.ui.base.BaseActivity
 import si.betoo.hodler.ui.detail.CoinDetailActivity
@@ -24,6 +25,7 @@ import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVP.View {
+
 
     @Inject
     lateinit var presenter: MainMVP.Presenter
@@ -39,6 +41,8 @@ class MainActivity : BaseActivity(), MainMVP.View {
     private val progressTotal: ProgressBar by bindView(R.id.progress_total)
 
     private val textHoldingValue: TextView by bindView(R.id.text_holding_value)
+    private val textPercentChange: TextView by bindView(R.id.text_percent_change)
+    private val textTotalChange: TextView by bindView(R.id.text_total_change)
 
     private val buttonRefresh: FloatingActionButton by bindView(R.id.button_refresh)
     private val buttonSettings: ImageButton by bindView(R.id.button_settings)
@@ -98,6 +102,14 @@ class MainActivity : BaseActivity(), MainMVP.View {
         val formatter = CurrencyFormatter(currencyCode, currencySymbol)
 
         textHoldingValue.text = formatter.format(total)
+    }
+
+    override fun showPercentChange(percentChange: Double) {
+        textPercentChange.text = "" + percentChange.roundTo2DecimalPlaces() + "%"
+    }
+
+    override fun showTotalChange(totalChange: Double) {
+        textTotalChange.text = "" + totalChange.roundTo2DecimalPlaces()
     }
 
     override fun showCoinDetail(coin: Coin) {

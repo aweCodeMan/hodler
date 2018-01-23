@@ -73,6 +73,22 @@
                             android:layout_gravity="center"
                             tools:text="€34,234.34" />
 
+                        <TextView
+                            android:id="@+id/text_percent_change"
+                            style="@style/Text.Content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="23" />
+
+                        <TextView
+                            android:id="@+id/text_total_change"
+                            style="@style/Text.Content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="23" />
+
                     </LinearLayout>
                 </RelativeLayout>
 

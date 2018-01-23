@@ -12,6 +12,8 @@ interface MainMVP {
         fun showCoinDetail(coin: Coin)
         fun showTotal(total: Double, currencyCode: String, currencySymbol: String)
         fun showSettings()
+        fun showPercentChange(percentChange: Double)
+        fun showTotalChange(totalChange: Double)
     }
 
     interface Presenter {

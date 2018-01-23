@@ -93,6 +93,21 @@ class MainPresenter(private var view: MainMVP.View,
             }
         }
 
+        var percentChange = 0.0
+
+        //  Calculate percentage drop and total value drop
+        for (updatedCoin in updatedCoins) {
+            if (updatedCoin.prices[currency] != null) {
+                if (updatedCoin.coin.coin.symbol != currency) {
+
+                    val coinChange = updatedCoin.prices[currency]!!.change24HourPercent
+                    percentChange += coinChange * (updatedCoin.prices[currency]!!.price.times(updatedCoin.holdingsAmount())/total)
+                }
+            }
+        }
+
+        view.showPercentChange(percentChange)
+        view.showTotalChange(percentChange * total / 100)
         view.showTotal(total.roundTo2DecimalPlaces(), getCurrentCurrencyCode(), coinService.availableCurrencies[getCurrentCurrencyCode()]!!)
     }
 
