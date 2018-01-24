@@ -34,7 +34,7 @@ class MainPresenter(private var view: MainMVP.View,
     }
 
     override fun refreshPrices() {
-        loadPricesForCoins(cachedCoins)
+        loadPricesForCoins(cachedCoins, true)
     }
 
     override fun switchCurrentCurrency() {
@@ -52,13 +52,13 @@ class MainPresenter(private var view: MainMVP.View,
         view.showSettingsScreen()
     }
 
-    private fun loadPricesForCoins(coins: List<CoinWithTransactions>) {
+    private fun loadPricesForCoins(coins: List<CoinWithTransactions>, ignoreCache: Boolean = false) {
         if (coins.isNotEmpty()) {
             val symbols = coins.joinToString { item -> item.coin.symbol }.replace(" ", "")
 
             view.showProgress(true)
 
-            coinService.getPricesForCoins(symbols)
+            coinService.getPricesForCoins(symbols, ignoreCache)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ prices ->

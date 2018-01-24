@@ -82,34 +82,55 @@ settingsObserver: UserSettings) {
                 .subscribe { db -> db.coinDAO().insert(item) }
     }
 
-    fun getHistoryDay(fromCurrencyCode: String, toCurrencyCode: String, limit : Int): Observable<List<History>> {
+    fun getHistoryDay(fromCurrencyCode: String, toCurrencyCode: String, limit: Int): Observable<List<History>> {
         return provideCryptoCompare.getHistoryDay(fromCurrencyCode, toCurrencyCode, limit).map { it.data }
     }
 
-    fun getPricesForCoins(symbols: String): Observable<List<Price>> {
+    fun getPricesForCoins(symbols: String, ignoreCache: Boolean = false): Observable<List<Price>> {
         val cachedPrice = cachedPrices[symbols]
-
         val currencies = availableCurrencies.keys.joinToString(",")
 
-        if (cachedPrice != null && cachedPrice.timestamp > (System.currentTimeMillis() - PRICE_CACHE_IN_MS)) {
-            return Observable.just(cachedPrice.prices)
+        if (!ignoreCache) {
+            if (cachedPrice != null && cachedPrice.timestamp > (System.currentTimeMillis() - PRICE_CACHE_IN_MS)) {
+                return Observable.just(cachedPrice.prices)
+            }
         }
 
-        return provideCryptoCompare.getCoinPriceMultiFull(symbols, currencies)
-                .map { prices ->
-                    val results = ArrayList<Price>()
+        val publishSubject = PublishSubject.create<List<Price>>()
 
-                    for (raw in prices.raw) {
+        database.priceDAO()
+                .getPrices(arrayOf(symbols), availableCurrencies.keys.toTypedArray())
+                .subscribeOn(Schedulers.io())
+                .doOnError({ Timber.e(it) })
+                .toObservable()
+                .subscribe({ prices ->
+                    if (prices.isNotEmpty() && !ignoreCache) {
+                        cachedPrices.put(symbols, CachePriceWrapper(System.currentTimeMillis(), prices))
+                        publishSubject.onNext(prices)
+                    } else {
+                        provideCryptoCompare.getCoinPriceMultiFull(symbols, currencies)
+                                .subscribe({ apiPrices ->
+                                    val results = ArrayList<Price>()
 
-                        for (currency in raw.value.data) {
-                            results.add(Price(raw.key, currency.key, availableCurrencies[currency.key]!!, currency.value.price, currency.value.changePercent24Hour, currency.value.lastUpdate))
-                        }
+                                    for (raw in apiPrices.raw) {
+
+                                        for (currency in raw.value.data) {
+                                            results.add(Price(raw.key, currency.key, availableCurrencies[currency.key]!!, currency.value.price, currency.value.changePercent24Hour, currency.value.lastUpdate))
+                                        }
+                                    }
+
+                                    cachedPrices.put(symbols, CachePriceWrapper(System.currentTimeMillis(), results))
+
+                                    Observable.just(database)
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe { db -> db.priceDAO().insertMany(results) }
+
+                                    publishSubject.onNext(prices)
+                                })
                     }
+                })
 
-                    cachedPrices.put(symbols, CachePriceWrapper(System.currentTimeMillis(), results))
-
-                    results
-                }
+        return publishSubject
     }
 
     private fun mergeAvailableWithActive(activeCoins: List<Coin>, coinsFromAPI: List<Coin>): List<Coin> {
