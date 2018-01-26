@@ -125,7 +125,7 @@ settingsObserver: UserSettings) {
                                             .subscribeOn(Schedulers.io())
                                             .subscribe { db -> db.priceDAO().insertMany(results) }
 
-                                    publishSubject.onNext(prices)
+                                    publishSubject.onNext(results)
                                 })
                     }
                 })
