@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
@@ -91,17 +92,18 @@ class SelectCoinsActivity : BaseActivity(), SelectCoinsMVP.View {
         val inflater = menuInflater
         inflater.inflate(R.menu.select_coins_toolbar, menu)
 
-        val search: EditText = menu.findItem(R.id.action_search).actionView as EditText
+        val search: SearchView = menu.findItem(R.id.action_search).actionView as SearchView
+        search.queryHint = getString(R.string.search)
 
-        search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                presenter.onQueryChanged(newText.toString())
+                return true
+            }
 
-            override fun beforeTextChanged(p0: CharSequence?, start: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, start: Int, p2: Int, p3: Int) {
-                if (p0 != null) {
-                    presenter.onQueryChanged(p0.toString())
-                }
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                presenter.onQueryChanged(query.toString())
+                return true
             }
         })
 
