@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import kotterknife.bindView
+import si.betoo.hodler.CurrencyFormatter
 import si.betoo.hodler.R
 import si.betoo.hodler.data.coin.Coin
 import si.betoo.hodler.roundTo2DecimalPlaces
@@ -71,6 +72,15 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
             rootView.setOnClickListener({ listener.onCoinClicked(coinWithPrice.coin.coin, rootView) })
 
             val amount = coinWithPrice.holdingsAmount()
+
+            if (amount == 0.0) {
+                textAmount.visibility = View.INVISIBLE
+                textAmountValue.visibility = View.INVISIBLE
+            } else {
+                textAmount.visibility = View.VISIBLE
+                textAmountValue.visibility = View.VISIBLE
+            }
+
             textAmount.text = amount.toString()
 
             textSymbol.text = coinWithPrice.coin.coin.symbol
@@ -87,7 +97,10 @@ class MainAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<Recy
                         coinPrice.showPrice(entry)
 
                         //  Also use price to show value for the amount of coins
-                        textAmountValue.text = entry.value.currencySymbol + (entry.value.price * amount).roundTo2DecimalPlaces()
+                        //textAmountValue.text = entry.value.currencySymbol + (entry.value.price * amount).roundTo2DecimalPlaces()
+
+                        val formatter = CurrencyFormatter(entry.value.currency, entry.value.currencySymbol)
+                        textAmountValue.text = formatter.format((entry.value.price * amount).roundTo2DecimalPlaces())
                         break
                     } else {
                         coinPrice.visibility = View.INVISIBLE

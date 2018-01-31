@@ -17,6 +17,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:alpha="0.5"
         android:contentDescription="@string/description_select_coins"
         android:src="@drawable/ic_add_circle_outline_white_36dp" />
 

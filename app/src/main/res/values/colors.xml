@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#102738</color>
-    <color name="colorPrimaryDark">#225378</color>
+    <color name="colorPrimary">#0079bf</color>
+    <color name="colorPrimaryDark">#00468C</color>
     <color name="colorAccent">#DC3522</color>
 
     <color name="colorWhite">#EEEFF7</color>
@@ -18,5 +18,7 @@
 
     <color name="colorPositive">#01b607</color>
     <color name="colorNegative">#ff0000</color>
+
+    <color name="windowBackground">#212121</color>
 
 </resources>

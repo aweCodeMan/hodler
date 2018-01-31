@@ -5,7 +5,7 @@
         <item name="colorPrimaryDark">#07121a</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
     <style name="Text.Title" parent="Base.TextAppearance.AppCompat.Large">
@@ -26,10 +26,9 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-    <style name="Text.Home.Label" parent="Text.Content">
+    <style name="Text.Home.Label" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/colorLightGray</item>
     </style>
 
 </resources>

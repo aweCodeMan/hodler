@@ -3,6 +3,7 @@ package si.betoo.hodler.ui.main
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.math.MathUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -10,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.ButterKnife
@@ -44,6 +46,7 @@ class MainActivity : BaseActivity(), MainMVP.View {
     private val collapsingToolbarTotal: TextView by bindView(R.id.collapse_toolbar_total)
     private val collapsingToolbarChangePercent: TextView by bindView(R.id.collapse_toolbar_change_percent)
     private val collapsingToolbarTotalChange: TextView by bindView(R.id.collapse_toolbar_total_change)
+    private val collapsingToolbarTrend: ImageView by bindView(R.id.collapse_toolbar_image_trend)
 
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
 
@@ -121,6 +124,13 @@ class MainActivity : BaseActivity(), MainMVP.View {
 
     override fun showPercentChange(percentChange: Double) {
         collapsingToolbarChangePercent.text = getString(R.string.percent_change, percentChange.roundTo2DecimalPlaces().toString())
+
+        //  10% is full vertical (in each direction)
+        val clampedValue = MathUtils.clamp(-percentChange, -10.0, 10.0)
+        val rotation = clampedValue * (90.0 / 10.0)
+
+
+        collapsingToolbarTrend.rotation = rotation.toFloat()
     }
 
     override fun showCoinDetailScreen(coin: Coin) {

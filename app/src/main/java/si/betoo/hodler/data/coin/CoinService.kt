@@ -99,7 +99,7 @@ settingsObserver: UserSettings) {
         val publishSubject = PublishSubject.create<List<Price>>()
 
         database.priceDAO()
-                .getPrices(arrayOf(symbols), availableCurrencies.keys.toTypedArray())
+                .getPrices(symbols.split(",").toTypedArray(), availableCurrencies.keys.toTypedArray())
                 .subscribeOn(Schedulers.io())
                 .doOnError({ Timber.e(it) })
                 .toObservable()

@@ -3,27 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="start"
-    tools:parentTag="android.widget.LinearLayout">
+    tools:parentTag="android.support.constraint.ConstraintLayout">
 
-    <TextView
-        android:id="@+id/text_price"
-        style="@style/Text.Content"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:gravity="start"
-        tools:text="€4353.23" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_change"
-        style="@style/Text.Content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:layout_marginStart="@dimen/size_medium"
-        android:gravity="start"
-        android:textSize="12sp"
-        tools:text="3.24" />
+        <TextView
+            android:id="@+id/text_change"
+            style="@style/Text.Home.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="3.24" />
+
+        <TextView
+            android:id="@+id/text_price"
+            style="@style/Text.Home.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="€4353.23" />
+
+
+    </LinearLayout>
 
 </merge>
